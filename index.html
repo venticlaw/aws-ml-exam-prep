@@ -1,0 +1,2398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS Machine Learning Specialty — 4-Hour Instructor-Led Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --aws-orange: #c471ed;
+  --aws-dark: #18072b;
+  --aws-navy: #004aad;
+  --aws-light: #eaeaee;
+  --aws-blue: #004aad;
+  --aws-teal: #afe6ed;
+  --success: #2ECC71;
+  --danger: #E74C3C;
+  --warning: #f3bb06;
+  --bg: #18072b;
+  --card-bg: #1f0e38;
+  --card-border: #3a2060;
+  --text: #eaeaee;
+  --text-muted: #8eb6dc;
+  --radius: 12px;
+  --gold: #f3bb06;
+  --purple: #c471ed;
+  --royal-blue: #004aad;
+  --cyan: #afe6ed;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Nunito Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Manrope', 'Segoe UI', system-ui, sans-serif;
+}
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
+
+/* ── Top Nav ── */
+.topbar {
+  position: fixed; top:0; left:0; right:0; z-index:100;
+  background: rgba(24,7,43,.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--card-border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 56px;
+}
+.topbar-brand {
+  display:flex; align-items:center; gap:10px;
+  font-weight:700; font-size:1.1rem;
+}
+.topbar-brand .logo { color: var(--purple); font-size: 1.4rem; }
+.topbar-timer {
+  display:flex; align-items:center; gap:16px;
+}
+.timer-display {
+  font-family: 'SF Mono', 'Cascadia Code', monospace;
+  font-size: 1.35rem; font-weight: 700;
+  color: var(--cyan);
+  background: rgba(175,230,237,.08);
+  padding: 4px 16px; border-radius: 8px;
+  border: 1px solid rgba(175,230,237,.25);
+  min-width: 110px; text-align:center;
+}
+.timer-label { font-size:.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; }
+.btn {
+  padding: 8px 18px; border:none; border-radius:8px;
+  font-weight:600; font-size:.85rem; cursor:pointer;
+  transition: all .2s;
+}
+.btn-orange { background: linear-gradient(135deg, var(--purple), var(--royal-blue)); color:#fff; }
+.btn-orange:hover { background: linear-gradient(135deg, #d48ef2, #0058cc); transform:translateY(-1px); }
+.btn-outline {
+  background:transparent; color:var(--text);
+  border:1px solid var(--card-border);
+}
+.btn-outline:hover { border-color:var(--aws-orange); color:var(--aws-orange); }
+.btn-sm { padding:5px 12px; font-size:.8rem; }
+.btn-success { background:var(--success); color:#000; }
+.btn-danger { background:var(--danger); color:#fff; }
+
+/* ── Layout ── */
+.app { display:flex; margin-top:56px; min-height:calc(100vh - 56px); }
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 300px; min-width:300px;
+  background: var(--card-bg);
+  border-right: 1px solid var(--card-border);
+  overflow-y: auto; height: calc(100vh - 56px);
+  position: sticky; top:56px;
+  padding: 16px 0;
+}
+.sidebar-section { margin-bottom: 8px; }
+.sidebar-header {
+  padding: 8px 20px; font-size:.7rem;
+  text-transform:uppercase; letter-spacing:1.5px;
+  color:var(--text-muted); font-weight:700;
+}
+.sidebar-item {
+  display:flex; align-items:center; gap:10px;
+  padding: 10px 20px; cursor:pointer;
+  border-left:3px solid transparent;
+  transition: all .15s;
+  font-size:.9rem;
+}
+.sidebar-item:hover { background:rgba(255,255,255,.04); }
+.sidebar-item.active {
+  background:rgba(255,153,0,.08);
+  border-left-color:var(--aws-orange);
+  color:var(--aws-orange);
+}
+.sidebar-item.completed .dot { background:var(--success); }
+.sidebar-item .dot {
+  width:8px; height:8px; border-radius:50%;
+  background:var(--card-border); flex-shrink:0;
+}
+.sidebar-item .time {
+  margin-left:auto; font-size:.75rem;
+  color:var(--text-muted); font-family:monospace;
+}
+.sidebar-progress {
+  margin:12px 20px; padding:12px 16px;
+  background:rgba(196,113,237,.06);
+  border-radius:var(--radius);
+  border:1px solid rgba(196,113,237,.15);
+}
+.progress-bar-bg {
+  height:6px; background:var(--card-border);
+  border-radius:3px; overflow:hidden; margin-top:8px;
+}
+.progress-bar-fill {
+  height:100%; background:linear-gradient(90deg, var(--royal-blue), var(--purple));
+  border-radius:3px; transition:width .4s;
+}
+.progress-text { font-size:.8rem; color:var(--text-muted); }
+
+/* ── Main Content ── */
+.main { flex:1; padding:32px 48px; max-width:960px; }
+
+/* ── Module/Section Content ── */
+.module-header {
+  margin-bottom:32px; padding-bottom:20px;
+  border-bottom:1px solid var(--card-border);
+}
+.module-badge {
+  display:inline-block; padding:4px 12px; border-radius:20px;
+  font-size:.75rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:1px; margin-bottom:12px;
+}
+.badge-domain1 { background:rgba(0,74,173,.15); color:#8eb6dc; }
+.badge-domain2 { background:rgba(175,230,237,.12); color:var(--cyan); }
+.badge-domain3 { background:rgba(196,113,237,.15); color:var(--purple); }
+.badge-domain4 { background:rgba(243,187,6,.12); color:var(--gold); }
+.badge-review { background:rgba(46,204,113,.15); color:var(--success); }
+.badge-strategy { background:rgba(0,74,173,.15); color:#8eb6dc; }
+.module-header h1 { font-size:1.8rem; margin-bottom:8px; }
+.module-header p { color:var(--text-muted); font-size:1rem; }
+.module-meta { display:flex; gap:20px; margin-top:12px; font-size:.85rem; color:var(--text-muted); }
+.module-meta span { display:flex; align-items:center; gap:6px; }
+
+/* ── Content Cards ── */
+.content-card {
+  background:var(--card-bg); border:1px solid var(--card-border);
+  border-radius:var(--radius); padding:24px; margin-bottom:20px;
+}
+.content-card h2 { font-size:1.2rem; margin-bottom:12px; color:var(--aws-orange); }
+.content-card h3 { font-size:1.05rem; margin:16px 0 8px; color:var(--text); }
+.content-card ul { padding-left:20px; }
+.content-card li { margin-bottom:6px; color:var(--text); font-size:.92rem; }
+.content-card li::marker { color:var(--aws-orange); }
+.content-card p { margin-bottom:10px; font-size:.92rem; }
+.content-card code {
+  background:rgba(255,153,0,.1); color:var(--aws-orange);
+  padding:2px 6px; border-radius:4px; font-size:.85rem;
+}
+.content-card pre {
+  background:#0D1117; border:1px solid var(--card-border);
+  padding:16px; border-radius:8px; overflow-x:auto;
+  font-size:.85rem; margin:12px 0;
+}
+.content-card pre code { background:none; padding:0; }
+
+/* ── Key Concepts ── */
+.key-concept {
+  border-left:3px solid var(--cyan);
+  padding:12px 16px; margin:16px 0;
+  background:rgba(175,230,237,.04);
+  border-radius: 0 8px 8px 0;
+}
+.key-concept strong { color:var(--cyan); }
+
+/* ── Exam Tip ── */
+.exam-tip {
+  border:1px solid rgba(196,113,237,.3);
+  background:rgba(196,113,237,.06);
+  padding:16px 20px; border-radius:var(--radius);
+  margin:16px 0;
+}
+.exam-tip::before {
+  content:'💡 EXAM TIP'; display:block;
+  font-size:.75rem; font-weight:700; color:var(--aws-orange);
+  letter-spacing:1px; margin-bottom:8px;
+}
+
+/* ── Service Table ── */
+.service-table {
+  width:100%; border-collapse:collapse; margin:16px 0;
+  font-size:.88rem;
+}
+.service-table th {
+  text-align:left; padding:10px 14px;
+  background:rgba(255,153,0,.08);
+  color:var(--aws-orange); font-weight:600;
+  border-bottom:2px solid var(--aws-orange);
+}
+.service-table td {
+  padding:10px 14px;
+  border-bottom:1px solid var(--card-border);
+}
+.service-table tr:hover td { background:rgba(255,255,255,.02); }
+
+/* ── Quiz ── */
+.quiz-container { margin-top:24px; }
+.quiz-question {
+  background:var(--card-bg); border:1px solid var(--card-border);
+  border-radius:var(--radius); padding:24px; margin-bottom:16px;
+}
+.quiz-question .q-num {
+  font-size:.75rem; font-weight:700;
+  color:var(--aws-orange); text-transform:uppercase;
+  letter-spacing:1px; margin-bottom:8px;
+}
+.quiz-question .q-text { font-size:1rem; margin-bottom:16px; font-weight:500; }
+.quiz-option {
+  display:flex; align-items:flex-start; gap:12px;
+  padding:12px 16px; margin-bottom:8px;
+  border:1px solid var(--card-border);
+  border-radius:8px; cursor:pointer;
+  transition:all .15s;
+}
+.quiz-option:hover { border-color:var(--aws-orange); background:rgba(255,153,0,.04); }
+.quiz-option.selected { border-color:var(--aws-blue); background:rgba(32,116,213,.08); }
+.quiz-option.correct { border-color:var(--success); background:rgba(46,204,113,.08); }
+.quiz-option.incorrect { border-color:var(--danger); background:rgba(231,76,60,.08); }
+.quiz-option .opt-letter {
+  width:28px; height:28px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:.85rem; flex-shrink:0;
+  border:2px solid var(--card-border); transition:all .15s;
+}
+.quiz-option.selected .opt-letter { border-color:var(--aws-blue); color:var(--aws-blue); }
+.quiz-option.correct .opt-letter { border-color:var(--success); color:var(--success); background:rgba(46,204,113,.15); }
+.quiz-option.incorrect .opt-letter { border-color:var(--danger); color:var(--danger); }
+.quiz-explanation {
+  margin-top:12px; padding:12px 16px;
+  background:rgba(46,204,113,.06);
+  border:1px solid rgba(46,204,113,.2);
+  border-radius:8px; font-size:.88rem;
+  display:none;
+}
+.quiz-explanation.visible { display:block; }
+.quiz-actions { display:flex; gap:12px; margin-top:20px; }
+.score-card {
+  text-align:center; padding:32px;
+  background:var(--card-bg); border:1px solid var(--card-border);
+  border-radius:var(--radius);
+}
+.score-card .score { font-size:3rem; font-weight:800; color:var(--aws-orange); }
+.score-card .score-label { color:var(--text-muted); margin-top:4px; }
+
+/* ── Tabs ── */
+.tabs { display:flex; gap:4px; margin-bottom:20px; border-bottom:1px solid var(--card-border); }
+.tab {
+  padding:10px 20px; cursor:pointer; font-size:.9rem;
+  font-weight:600; color:var(--text-muted);
+  border-bottom:2px solid transparent;
+  transition: all .15s;
+}
+.tab:hover { color:var(--text); }
+.tab.active { color:var(--aws-orange); border-bottom-color:var(--aws-orange); }
+.tab-content { display:none; }
+.tab-content.active { display:block; }
+
+/* ── Accordion / Discussion ── */
+.accordion { margin:12px 0; }
+.accordion-header {
+  padding:14px 18px; cursor:pointer;
+  background:var(--card-bg); border:1px solid var(--card-border);
+  border-radius:var(--radius);
+  display:flex; justify-content:space-between; align-items:center;
+  font-weight:600; font-size:.92rem;
+  transition:all .15s;
+}
+.accordion-header:hover { border-color:var(--aws-orange); }
+.accordion-header .arrow { transition:transform .2s; }
+.accordion-header.open .arrow { transform:rotate(90deg); }
+.accordion-body {
+  display:none; padding:16px 18px;
+  border:1px solid var(--card-border);
+  border-top:none; border-radius:0 0 var(--radius) var(--radius);
+  background:var(--card-bg); font-size:.9rem;
+}
+.accordion-body.open { display:block; }
+
+/* ── Flashcard ── */
+.flashcard-deck { display:flex; flex-direction:column; align-items:center; gap:16px; }
+.flashcard {
+  width:100%; max-width:600px; min-height:200px;
+  perspective:1000px; cursor:pointer;
+}
+.flashcard-inner {
+  position:relative; width:100%; height:100%; min-height:200px;
+  transition:transform .5s; transform-style:preserve-3d;
+}
+.flashcard.flipped .flashcard-inner { transform:rotateY(180deg); }
+.flashcard-front, .flashcard-back {
+  position:absolute; width:100%; min-height:200px;
+  backface-visibility:hidden; border-radius:var(--radius);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:32px; text-align:center;
+}
+.flashcard-front {
+  background: linear-gradient(135deg, #1f0e38, var(--royal-blue));
+  border:1px solid var(--card-border);
+}
+.flashcard-back {
+  background: linear-gradient(135deg, #1a2a1a, #0d170d);
+  border:1px solid rgba(46,204,113,.3);
+  transform:rotateY(180deg);
+}
+.flashcard-front h3 { color:var(--aws-orange); font-size:1.1rem; }
+.flashcard-back p { font-size:.95rem; }
+.flashcard-nav { display:flex; gap:12px; align-items:center; }
+.flashcard-count { font-size:.85rem; color:var(--text-muted); }
+
+/* ── Whiteboard / Diagram ── */
+.diagram-box {
+  background:rgba(0,0,0,.3); border:1px solid var(--card-border);
+  border-radius:var(--radius); padding:24px;
+  margin:16px 0; overflow-x:auto;
+}
+.diagram-box pre {
+  font-family:'SF Mono','Cascadia Code',monospace;
+  font-size:.8rem; line-height:1.5;
+  color:var(--aws-teal); margin:0;
+  border:none; background:transparent; padding:0;
+}
+
+/* ── Instructor Notes ── */
+.instructor-note {
+  border:1px dashed rgba(243,187,6,.3);
+  background:rgba(243,187,6,.05);
+  padding:16px 20px; border-radius:var(--radius);
+  margin:16px 0; font-size:.88rem;
+}
+.instructor-note::before {
+  content:'🎓 INSTRUCTOR NOTE'; display:block;
+  font-size:.72rem; font-weight:700; color:var(--gold);
+  letter-spacing:1px; margin-bottom:8px;
+}
+
+/* ── Landing / Welcome ── */
+.landing { text-align:center; padding:60px 20px; max-width:700px; margin:0 auto; }
+.landing h1 { font-size:2.4rem; margin-bottom:8px; }
+.landing h1 span { color:var(--aws-orange); }
+.landing .subtitle { font-size:1.15rem; color:var(--text-muted); margin-bottom:32px; }
+.landing-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:16px;
+  margin:32px 0; text-align:left;
+}
+.landing-card {
+  background:var(--card-bg); border:1px solid var(--card-border);
+  border-radius:var(--radius); padding:20px;
+}
+.landing-card h3 { font-size:1rem; margin-bottom:4px; }
+.landing-card p { font-size:.85rem; color:var(--text-muted); }
+.landing-card .pct { font-size:1.6rem; font-weight:800; color:var(--aws-orange); }
+.start-btn {
+  padding:14px 48px; font-size:1.1rem; margin-top:24px;
+  background: linear-gradient(135deg, var(--purple), var(--royal-blue));
+  color:#fff; border:none; border-radius:var(--radius);
+  font-weight:700; cursor:pointer; transition:all .2s;
+}
+.start-btn:hover { background: linear-gradient(135deg, #d48ef2, #0058cc); transform:scale(1.03); }
+
+/* ── Responsive ── */
+@media(max-width:900px) {
+  .sidebar { display:none; }
+  .main { padding:24px 16px; }
+  .landing-grid { grid-template-columns:1fr; }
+}
+
+/* ── Animations ── */
+@keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.fade-in { animation: fadeIn .35s ease; }
+
+/* ── Lab styles ── */
+.lab-step {
+  display:flex; gap:16px; margin:16px 0;
+  padding:16px; background:rgba(29,199,182,.04);
+  border:1px solid rgba(29,199,182,.15);
+  border-radius:var(--radius);
+}
+.lab-step-num {
+  width:32px; height:32px; border-radius:50%;
+  background:var(--aws-teal); color:#000;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:.9rem; flex-shrink:0;
+}
+</style>
+</head>
+<body>
+
+<!-- ── Top Bar ── -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <span class="logo">▲</span> AWS ML Specialty — Exam Prep
+  </div>
+  <div class="topbar-timer">
+    <div>
+      <div class="timer-label">Session Time</div>
+      <div class="timer-display" id="timer">00:00:00</div>
+    </div>
+    <button class="btn btn-outline btn-sm" id="timerToggle" onclick="toggleTimer()">Start</button>
+    <button class="btn btn-outline btn-sm" onclick="resetTimer()">Reset</button>
+  </div>
+</div>
+
+<!-- ── App Shell ── -->
+<div class="app">
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar"></nav>
+
+  <!-- Main Content -->
+  <main class="main" id="mainContent"></main>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  DATA — Complete 4-Hour Curriculum
+// ═══════════════════════════════════════════════════════════
+const MODULES = [
+  // ── WELCOME ──
+  {
+    id:'welcome', title:'Welcome & Overview', time:'10 min', domain:'overview',
+    badge:'', badgeClass:'',
+    content: () => `
+      <div class="landing fade-in">
+        <h1>AWS <span>Machine Learning</span> Specialty</h1>
+        <p class="subtitle">MLS-C01 — 4-Hour Instructor-Led Exam Preparation</p>
+        <div class="landing-grid">
+          <div class="landing-card">
+            <h3>Domain 1: Data Engineering</h3>
+            <div class="pct">20%</div>
+            <p>Data ingestion, transformation, storage solutions</p>
+          </div>
+          <div class="landing-card">
+            <h3>Domain 2: Exploratory Data Analysis</h3>
+            <div class="pct">24%</div>
+            <p>Data visualization, feature engineering, statistics</p>
+          </div>
+          <div class="landing-card">
+            <h3>Domain 3: Modeling</h3>
+            <div class="pct">36%</div>
+            <p>Algorithm selection, training, tuning, evaluation</p>
+          </div>
+          <div class="landing-card">
+            <h3>Domain 4: ML Implementation & Ops</h3>
+            <div class="pct">20%</div>
+            <p>Deployment, security, monitoring, MLOps</p>
+          </div>
+        </div>
+        <p style="color:var(--text-muted);font-size:.9rem;margin:16px 0">
+          65 questions · 180 minutes · Scaled score 100–1000 (passing ~750)<br>
+          Format: multiple choice & multiple response
+        </p>
+        <button class="start-btn" onclick="goToModule(1)">Begin Session →</button>
+      </div>
+    `
+  },
+
+  // ═══════════════════════════════════════════════════════════
+  //  DOMAIN 1 — DATA ENGINEERING (55 min)
+  // ═══════════════════════════════════════════════════════════
+  {
+    id:'d1-ingestion', title:'1.1 Data Ingestion & Collection', time:'15 min',
+    domain:'Domain 1 · Data Engineering', badge:'Domain 1 — 20%', badgeClass:'badge-domain1',
+    content: () => `
+      <div class="fade-in">
+        <div class="module-header">
+          <span class="module-badge badge-domain1">Domain 1 — Data Engineering (20%)</span>
+          <h1>Data Ingestion & Collection</h1>
+          <p>How to move data from sources into AWS for ML workloads</p>
+          <div class="module-meta">
+            <span>⏱ 15 min</span><span>📖 Lecture + Discussion</span>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Batch vs. Streaming Ingestion</h2>
+          <table class="service-table">
+            <tr><th>Pattern</th><th>AWS Services</th><th>Use Case</th></tr>
+            <tr><td><strong>Batch</strong></td><td>AWS Glue, AWS Data Pipeline, S3 Transfer</td><td>Historical data, nightly ETL, large datasets</td></tr>
+            <tr><td><strong>Streaming</strong></td><td>Kinesis Data Streams, Kinesis Firehose, MSK</td><td>Real-time inference, click-streams, IoT</td></tr>
+            <tr><td><strong>Micro-batch</strong></td><td>Kinesis Firehose (buffered)</td><td>Near real-time with cost optimization</td></tr>
+          </table>
+        </div>
+
+        <div class="content-card">
+          <h2>Amazon Kinesis Family</h2>
+          <h3>Kinesis Data Streams (KDS)</h3>
+          <ul>
+            <li>Real-time (~200ms latency), shard-based scaling</li>
+            <li>1 MB/s in, 2 MB/s out per shard</li>
+            <li>Data retention: 24 hours default, up to 365 days</li>
+            <li>Consumer: KCL, Lambda, Kinesis Data Analytics</li>
+          </ul>
+          <h3>Kinesis Data Firehose</h3>
+          <ul>
+            <li>Near real-time (60s minimum buffer)</li>
+            <li>Fully managed, auto-scaling, no shards to manage</li>
+            <li>Destinations: S3, Redshift, OpenSearch, Splunk, HTTP</li>
+            <li>Can transform data with Lambda before delivery</li>
+          </ul>
+          <h3>Kinesis Data Analytics</h3>
+          <ul>
+            <li>SQL or Apache Flink on streaming data</li>
+            <li>Anomaly detection with <code>RANDOM_CUT_FOREST</code></li>
+            <li>Tumbling, sliding, and stagger windows</li>
+          </ul>
+
+          <div class="exam-tip">
+            If the question says <strong>"fully managed"</strong> and <strong>"near real-time delivery to S3"</strong> → Kinesis Firehose.<br>
+            If it says <strong>"real-time"</strong> with <strong>"custom consumers"</strong> → Kinesis Data Streams.
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>AWS Glue</h2>
+          <ul>
+            <li><strong>Glue Crawlers:</strong> discover schema, populate the Data Catalog</li>
+            <li><strong>Glue ETL:</strong> serverless Spark, PySpark/Scala transforms</li>
+            <li><strong>Glue DataBrew:</strong> visual, no-code data preparation (250+ transforms)</li>
+            <li><strong>FindMatches ML Transform:</strong> fuzzy record de-duplication</li>
+            <li><strong>Bookmarks:</strong> track already-processed data for incremental ETL</li>
+          </ul>
+          <div class="key-concept">
+            <strong>Key:</strong> Glue is serverless and integrates with the Glue Data Catalog, which serves as a central metadata repository for Athena, Redshift Spectrum, and EMR.
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Other Ingestion Services</h2>
+          <table class="service-table">
+            <tr><th>Service</th><th>When to Use</th></tr>
+            <tr><td><strong>AWS Database Migration Service (DMS)</strong></td><td>Migrate databases; continuous replication to S3/Kinesis</td></tr>
+            <tr><td><strong>AWS Transfer Family</strong></td><td>SFTP/FTPS/FTP to S3 — legacy file-based ingestion</td></tr>
+            <tr><td><strong>AWS DataSync</strong></td><td>High-speed on-prem ↔ S3/EFS/FSx transfer</td></tr>
+            <tr><td><strong>AWS Snow Family</strong></td><td>Snowball/Snowmobile for massive offline transfers</td></tr>
+            <tr><td><strong>AWS IoT Core</strong></td><td>Ingest from IoT devices via MQTT → rules → S3/Kinesis</td></tr>
+          </table>
+        </div>
+
+        <div class="instructor-note">
+          <strong>Discussion prompt:</strong> "You have 50 TB of historical data on-premises and 10 GB/day of new clickstream data. Design the ingestion architecture." Guide students to use Snowball for the historical bulk, then Kinesis Firehose → S3 for the streaming portion.
+        </div>
+      </div>
+    `
+  },
+
+  {
+    id:'d1-storage', title:'1.2 Data Storage & Transformation', time:'15 min',
+    domain:'Domain 1 · Data Engineering', badge:'Domain 1 — 20%', badgeClass:'badge-domain1',
+    content: () => `
+      <div class="fade-in">
+        <div class="module-header">
+          <span class="module-badge badge-domain1">Domain 1 — Data Engineering (20%)</span>
+          <h1>Data Storage & Transformation</h1>
+          <p>Choosing the right storage layer and transforming data for ML</p>
+          <div class="module-meta"><span>⏱ 15 min</span><span>📖 Lecture + Diagram</span></div>
+        </div>
+
+        <div class="content-card">
+          <h2>S3 as the ML Data Lake</h2>
+          <ul>
+            <li><strong>Storage classes:</strong> Standard, IA, Glacier — use Lifecycle Policies</li>
+            <li><strong>File formats for ML:</strong></li>
+          </ul>
+          <table class="service-table">
+            <tr><th>Format</th><th>Type</th><th>Best For</th></tr>
+            <tr><td><code>CSV / JSON</code></td><td>Row</td><td>Simple, human-readable; SageMaker training input</td></tr>
+            <tr><td><code>Parquet</code></td><td>Columnar</td><td>Analytics, Athena, Redshift Spectrum — compressed & fast</td></tr>
+            <tr><td><code>ORC</code></td><td>Columnar</td><td>Hive/EMR workloads</td></tr>
+            <tr><td><code>RecordIO / Protobuf</code></td><td>Binary</td><td>SageMaker built-in algorithms (most performant)</td></tr>
+            <tr><td><code>TFRecord</code></td><td>Binary</td><td>TensorFlow on SageMaker</td></tr>
+          </table>
+          <div class="exam-tip">
+            Many SageMaker built-in algorithms perform best with <strong>RecordIO-wrapped Protobuf</strong>. The exam tests whether you know this format and when CSV is acceptable.
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Data Lake Architecture</h2>
+          <div class="diagram-box"><pre>
+  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+  │   Raw Zone   │───▶│ Curated Zone │───▶│  ML-Ready    │
+  │  (Landing)   │    │ (Cleaned)    │    │  (Features)  │
+  │  s3://raw/   │    │ s3://curated/│    │ s3://ml/     │
+  └──────────────┘    └──────────────┘    └──────────────┘
+        ▲                    ▲                    │
+   Kinesis/Glue         Glue ETL            SageMaker
+   DMS/DataSync         Athena              Training
+                        EMR
+          </pre></div>
+          <div class="key-concept">
+            <strong>Lake Formation:</strong> Centralized governance — fine-grained access control, data sharing, and cross-account permissions on top of S3 + Glue Catalog.
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Transformation Services Comparison</h2>
+          <table class="service-table">
+            <tr><th>Service</th><th>Managed?</th><th>Scale</th><th>Language</th></tr>
+            <tr><td><strong>AWS Glue</strong></td><td>Serverless</td><td>Auto</td><td>PySpark, Scala</td></tr>
+            <tr><td><strong>Amazon EMR</strong></td><td>Managed cluster</td><td>Manual/Auto</td><td>Spark, Hive, Presto, Flink</td></tr>
+            <tr><td><strong>Athena</strong></td><td>Serverless</td><td>Auto</td><td>SQL (Presto/Trino)</td></tr>
+            <tr><td><strong>Redshift</strong></td><td>Provisioned/Serverless</td><td>Manual</td><td>SQL</td></tr>
+            <tr><td><strong>SageMaker Processing</strong></td><td>Managed containers</td><td>Auto</td><td>Python, Spark</td></tr>
+          </table>
+          <div class="exam-tip">
+            <strong>Glue vs EMR:</strong> Glue = serverless, no cluster mgmt. EMR = more control, custom frameworks (Hadoop ecosystem), Spot instances for cost. If the question mentions "minimize operational overhead" → Glue.
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Data Pipeline Patterns</h2>
+          <h3>SageMaker Processing Jobs</h3>
+          <ul>
+            <li>Run data processing scripts (sklearn, pandas, PySpark) in managed containers</li>
+            <li>Input: S3 → Processing → Output: S3</li>
+            <li>Integrates with SageMaker Pipelines for orchestration</li>
+          </ul>
+          <h3>Step Functions + Glue/Lambda</h3>
+          <ul>
+            <li>Orchestrate complex multi-step ETL workflows</li>
+            <li>Visual workflow designer, error handling, retries</li>
+          </ul>
+        </div>
+
+        <div class="instructor-note">
+          Ask students: "When would you choose EMR over Glue?" Expected: when you need a specific Hadoop ecosystem tool, need GPUs on the cluster, or want to use Spot instances aggressively.
+        </div>
+      </div>
+    `
+  },
+
+  {
+    id:'d1-quiz', title:'1.3 Domain 1 Quiz', time:'15 min',
+    domain:'Domain 1 · Data Engineering', badge:'Quiz', badgeClass:'badge-domain1',
+    content: () => renderQuiz('d1', [
+      {
+        q: 'A company needs to ingest 500 GB/day of clickstream data and deliver it to S3 for ML training. They want a fully managed solution with no infrastructure to manage. Which service should they use?',
+        opts: ['Kinesis Data Streams with a Lambda consumer writing to S3','Amazon Kinesis Data Firehose','Amazon MSK (Managed Streaming for Kafka)','AWS Glue Streaming ETL'],
+        correct: 1,
+        explain: 'Kinesis Data Firehose is fully managed (no shards, no consumers) and delivers directly to S3. KDS requires managing shards and consumers. MSK requires cluster management. Glue Streaming works but is more complex for a simple S3 delivery.'
+      },
+      {
+        q: 'Which file format provides the BEST training performance for most Amazon SageMaker built-in algorithms?',
+        opts: ['CSV','Parquet','RecordIO-wrapped Protobuf','JSON Lines'],
+        correct: 2,
+        explain: 'Most SageMaker built-in algorithms are optimized for RecordIO-wrapped Protobuf format, which uses Pipe mode for streaming from S3 with the highest throughput. CSV is supported but slower.'
+      },
+      {
+        q: 'A data engineering team uses AWS Glue crawlers. What is the PRIMARY purpose of the Glue Data Catalog?',
+        opts: ['Store the actual data files','Provide a central metadata repository for schema and table definitions','Run SQL queries against S3 data','Manage IAM permissions for data access'],
+        correct: 1,
+        explain: 'The Glue Data Catalog is a centralized metadata repository. It stores table definitions, schemas, and partition information. It does not store actual data (that stays in S3) and does not run queries (Athena does that).'
+      },
+      {
+        q: 'An ML team needs to perform ad-hoc SQL queries on data stored in S3 in Parquet format. They want a serverless option. Which service is MOST appropriate?',
+        opts: ['Amazon Redshift','Amazon EMR with Hive','Amazon Athena','Amazon RDS'],
+        correct: 2,
+        explain: 'Athena is serverless and can query S3 data directly using SQL. Parquet format is ideal for Athena as it is columnar and compressed. Redshift requires provisioning (unless Serverless, but Athena is the primary serverless SQL-on-S3 service). EMR requires clusters.'
+      },
+      {
+        q: 'A team needs to de-duplicate customer records that have slight name/address variations. Which AWS service has a built-in ML capability for this?',
+        opts: ['Amazon Athena','AWS Glue FindMatches','Amazon Comprehend','Amazon Macie'],
+        correct: 1,
+        explain: 'AWS Glue FindMatches is an ML transform that identifies duplicate or matching records even when they don\'t have a common identifier — fuzzy matching on names, addresses, etc.'
+      },
+      {
+        q: 'Which Kinesis service supports SQL-based real-time anomaly detection on streaming data?',
+        opts: ['Kinesis Data Streams','Kinesis Data Firehose','Kinesis Data Analytics','Kinesis Video Streams'],
+        correct: 2,
+        explain: 'Kinesis Data Analytics supports SQL queries on streams and has built-in anomaly detection via the RANDOM_CUT_FOREST function. It can also use Apache Flink for more complex stream processing.'
+      },
+      {
+        q: 'A company wants to transfer 100 TB of training data from on-premises to AWS. Their internet connection is 1 Gbps. What is the MOST efficient approach?',
+        opts: ['Use AWS DataSync over the internet','Use AWS Direct Connect','Use AWS Snowball Edge devices','Upload directly to S3 using multipart upload'],
+        correct: 2,
+        explain: '100 TB over 1 Gbps ≈ 10+ days, and that assumes full utilization. Snowball Edge devices can transfer petabytes physically, arriving in days. For bulk one-time transfers of this size, Snow family is the recommended approach.'
+      },
+      {
+        q: 'An ML pipeline needs to run a PySpark data preprocessing script before training. The team wants to use SageMaker. Which SageMaker feature should they use?',
+        opts: ['SageMaker Training job with a custom container','SageMaker Processing job','SageMaker Batch Transform','SageMaker Ground Truth'],
+        correct: 1,
+        explain: 'SageMaker Processing jobs are designed for data preprocessing, postprocessing, and evaluation. They run scripts in managed containers and support PySpark. Training jobs are for model training, not preprocessing.'
+      }
+    ])
+  },
+
+  {
+    id:'d1-break', title:'☕ Break (5 min)', time:'5 min',
+    domain:'Break', badge:'', badgeClass:'',
+    content: () => `
+      <div class="fade-in" style="text-align:center;padding:80px 20px">
+        <div style="font-size:4rem;margin-bottom:20px">☕</div>
+        <h1>5-Minute Break</h1>
+        <p style="color:var(--text-muted);margin:12px 0">Stretch, hydrate, review notes</p>
+        <p style="color:var(--text-muted);font-size:.9rem;margin-top:24px">
+          <strong>Coming up next:</strong> Domain 2 — Exploratory Data Analysis (24% of exam)
+        </p>
+        <button class="btn btn-orange" style="margin-top:24px" onclick="goToModule(${MODULES.findIndex(m=>m.id==='d2-viz')+1 || 5})">Continue →</button>
+      </div>
+    `
+  },
+
+  // ═══════════════════════════════════════════════════════════
+  //  DOMAIN 2 — EXPLORATORY DATA ANALYSIS (60 min)
+  // ═══════════════════════════════════════════════════════════
+  {
+    id:'d2-viz', title:'2.1 Data Visualization & Statistics', time:'15 min',
+    domain:'Domain 2 · EDA', badge:'Domain 2 — 24%', badgeClass:'badge-domain2',
+    content: () => `
+      <div class="fade-in">
+        <div class="module-header">
+          <span class="module-badge badge-domain2">Domain 2 — Exploratory Data Analysis (24%)</span>
+          <h1>Data Visualization & Statistics</h1>
+          <p>Understanding your data before building models</p>
+          <div class="module-meta"><span>⏱ 15 min</span><span>📖 Lecture</span></div>
+        </div>
+
+        <div class="content-card">
+          <h2>Descriptive Statistics for ML</h2>
+          <table class="service-table">
+            <tr><th>Concept</th><th>What It Tells You</th><th>ML Relevance</th></tr>
+            <tr><td><strong>Mean / Median / Mode</strong></td><td>Central tendency</td><td>Imputation strategy; skewness detection</td></tr>
+            <tr><td><strong>Variance / Std Dev</strong></td><td>Spread</td><td>Feature scaling decisions</td></tr>
+            <tr><td><strong>Skewness</strong></td><td>Asymmetry of distribution</td><td>May need log transform</td></tr>
+            <tr><td><strong>Kurtosis</strong></td><td>Tail heaviness</td><td>Outlier sensitivity</td></tr>
+            <tr><td><strong>Correlation (Pearson)</strong></td><td>Linear relationship</td><td>Feature selection; multicollinearity</td></tr>
+          </table>
+        </div>
+
+        <div class="content-card">
+          <h2>Visualization Types & When to Use Them</h2>
+          <table class="service-table">
+            <tr><th>Chart</th><th>Use Case</th><th>Tool</th></tr>
+            <tr><td>Histogram</td><td>Distribution of a single feature</td><td>matplotlib, QuickSight</td></tr>
+            <tr><td>Box Plot</td><td>Outlier detection, quartile comparison</td><td>matplotlib, seaborn</td></tr>
+            <tr><td>Scatter Plot</td><td>Relationship between two numeric features</td><td>matplotlib, SageMaker</td></tr>
+            <tr><td>Heatmap</td><td>Correlation matrix visualization</td><td>seaborn</td></tr>
+            <tr><td>Pair Plot</td><td>Multi-feature relationship overview</td><td>seaborn</td></tr>
+            <tr><td>Bar Chart</td><td>Categorical feature distribution</td><td>QuickSight, matplotlib</td></tr>
+          </table>
+          <div class="exam-tip">
+            <strong>Amazon QuickSight</strong> is the AWS BI service for dashboards. It supports <strong>ML Insights</strong> — anomaly detection and forecasting built in. Know that QuickSight uses <strong>SPICE</strong> (in-memory engine) for fast dashboards.
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Types of Data</h2>
+          <ul>
+            <li><strong>Numerical (Continuous):</strong> height, price, temperature → normalization/standardization</li>
+            <li><strong>Numerical (Discrete):</strong> count of items → may treat as categorical</li>
+            <li><strong>Categorical (Nominal):</strong> color, city → one-hot encoding</li>
+            <li><strong>Categorical (Ordinal):</strong> low/medium/high → label encoding preserving order</li>
+            <li><strong>Text:</strong> reviews, documents → NLP pipelines (tokenization, embedding)</li>
+            <li><strong>Time Series:</strong> stock prices, sensor data → lag features, windowing</li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>Distributions to Know</h2>
+          <ul>
+            <li><strong>Normal (Gaussian):</strong> bell curve — many ML algorithms assume this</li>
+            <li><strong>Binomial:</strong> binary outcomes (pass/fail) — classification target</li>
+            <li><strong>Poisson:</strong> count of events in a time period — rare event modeling</li>
+            <li><strong>Uniform:</strong> equal probability — random initialization</li>
+          </ul>
+          <div class="key-concept">
+            <strong>Central Limit Theorem:</strong> Sample means approach a normal distribution as sample size increases, regardless of the population distribution. This underpins many statistical tests.
+          </div>
+        </div>
+      </div>
+    `
+  },
+
+  {
+    id:'d2-feature', title:'2.2 Feature Engineering', time:'20 min',
+    domain:'Domain 2 · EDA', badge:'Domain 2 — 24%', badgeClass:'badge-domain2',
+    content: () => `
+      <div class="fade-in">
+        <div class="module-header">
+          <span class="module-badge badge-domain2">Domain 2 — Exploratory Data Analysis (24%)</span>
+          <h1>Feature Engineering</h1>
+          <p>Transforming raw data into features that improve model performance</p>
+          <div class="module-meta"><span>⏱ 20 min</span><span>📖 Lecture + Hands-on Discussion</span></div>
+        </div>
+
+        <div class="content-card">
+          <h2>Handling Missing Data</h2>
+          <table class="service-table">
+            <tr><th>Strategy</th><th>When to Use</th><th>Risk</th></tr>
+            <tr><td><strong>Drop rows</strong></td><td>Small % missing, MCAR</td><td>Lose data; bias if not random</td></tr>
+            <tr><td><strong>Drop feature</strong></td><td>>50% missing</td><td>Lose information</td></tr>
+            <tr><td><strong>Mean/Median imputation</strong></td><td>Numerical, low missing %</td><td>Reduces variance</td></tr>
+            <tr><td><strong>Mode imputation</strong></td><td>Categorical</td><td>May skew distribution</td></tr>
+            <tr><td><strong>KNN imputation</strong></td><td>Complex patterns</td><td>Computationally expensive</td></tr>
+            <tr><td><strong>MICE / Iterative</strong></td><td>Multiple features missing</td><td>Slow, complex</td></tr>
+            <tr><td><strong>Indicator variable</strong></td><td>Missingness is informative</td><td>Adds a feature</td></tr>
+          </table>
+          <div class="exam-tip">
+            Missing data terminology: <strong>MCAR</strong> (Missing Completely At Random), <strong>MAR</strong> (Missing At Random — depends on observed data), <strong>MNAR</strong> (Missing Not At Random — depends on unobserved data). The exam may test which imputation is appropriate for each.
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Encoding Categorical Variables</h2>
+          <h3>One-Hot Encoding</h3>
+          <ul>
+            <li>Creates binary columns for each category</li>
+            <li>Best for nominal (unordered) categories</li>
+            <li>Watch out for high-cardinality features (1000s of categories)</li>
+          </ul>
+          <h3>Label / Ordinal Encoding</h3>
+          <ul>
+            <li>Maps categories to integers</li>
+            <li>Preserves order for ordinal features</li>
+            <li>Danger: tree-based models handle this well, linear models may infer false order</li>
+          </ul>
+          <h3>Target Encoding</h3>
+          <ul>
+            <li>Replace category with mean of target variable</li>
+            <li>Risk of target leakage — must use cross-validation</li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>Feature Scaling</h2>
+          <table class="service-table">
+            <tr><th>Method</th><th>Formula</th><th>When</th></tr>
+            <tr><td><strong>Normalization (Min-Max)</strong></td><td>(x - min) / (max - min) → [0,1]</td><td>Neural nets, KNN, algorithms sensitive to magnitude</td></tr>
+            <tr><td><strong>Standardization (Z-score)</strong></td><td>(x - μ) / σ → mean=0, std=1</td><td>SVM, Logistic Regression, PCA</td></tr>
+            <tr><td><strong>Robust Scaling</strong></td><td>(x - median) / IQR</td><td>When outliers are present</td></tr>
+          </table>
+          <div class="key-concept">
+            <strong>Important:</strong> Tree-based algorithms (XGBoost, Random Forest) do NOT require feature scaling. Distance/gradient-based algorithms (KNN, SVM, Neural Networks, Linear/Logistic Regression) DO.
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Dimensionality Reduction</h2>
+          <h3>PCA (Principal Component Analysis)</h3>
+          <ul>
+            <li>Unsupervised — finds orthogonal axes of maximum variance</li>
+            <li>Available as SageMaker built-in algorithm</li>
+            <li><strong>Regular mode:</strong> full dataset in memory</li>
+            <li><strong>Randomized mode:</strong> approximation for large datasets</li>
+            <li>Use when you have many correlated features → reduce multicollinearity</li>
+          </ul>
+          <h3>t-SNE / UMAP</h3>
+          <ul>
+            <li>Non-linear dimensionality reduction for visualization only</li>
+            <li>t-SNE: good for cluster visualization in 2D/3D</li>
+            <li>Not used for feature engineering — only for understanding data</li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>Handling Imbalanced Data</h2>
+          <ul>
+            <li><strong>SMOTE:</strong> Synthetic Minority Over-sampling Technique — creates synthetic minority samples</li>
+            <li><strong>Random Over-sampling:</strong> duplicate minority class</li>
+            <li><strong>Random Under-sampling:</strong> remove majority class</li>
+            <li><strong>Class weights:</strong> tell the algorithm to penalize misclassifying minority class more</li>
+            <li><strong>Anomaly detection approach:</strong> treat as unsupervised problem</li>
+          </ul>
+          <div class="exam-tip">
+            For imbalanced datasets, <strong>accuracy is a misleading metric</strong>. Use Precision, Recall, F1-Score, or AUC-ROC instead. The exam frequently tests this concept.
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Feature Selection Methods</h2>
+          <ul>
+            <li><strong>Filter methods:</strong> Correlation, Chi-squared, ANOVA — fast, independent of model</li>
+            <li><strong>Wrapper methods:</strong> Forward/Backward selection, RFE — uses model performance</li>
+            <li><strong>Embedded methods:</strong> L1 (Lasso) regularization, tree feature importance — built into training</li>
+          </ul>
+        </div>
+
+        <div class="instructor-note">
+          <strong>Hands-on discussion:</strong> Show a sample dataset with missing values, categorical variables, and different scales. Walk through the decision tree: "What encoding for city names? How to handle 30% missing income? Should we scale for XGBoost?"
+        </div>
+      </div>
+    `
+  },
+
+  {
+    id:'d2-quiz', title:'2.3 Domain 2 Quiz', time:'15 min',
+    domain:'Domain 2 · EDA', badge:'Quiz', badgeClass:'badge-domain2',
+    content: () => renderQuiz('d2', [
+      {
+        q: 'A dataset has a "customer_satisfaction" feature with values Low, Medium, High. Which encoding method BEST preserves the ordinal relationship?',
+        opts: ['One-hot encoding','Label/Ordinal encoding (Low=1, Medium=2, High=3)','Target encoding','Binary encoding'],
+        correct: 1,
+        explain: 'Ordinal encoding maps categories to integers while preserving the natural order. One-hot encoding would lose the ordering information. Target encoding would replace the values with target means, losing the ordinal semantics.'
+      },
+      {
+        q: 'A binary classification model achieves 97% accuracy on a dataset where 97% of samples are Class A. What should you conclude?',
+        opts: ['The model is excellent','The model may just be predicting the majority class — use F1/AUC instead','The dataset needs more Class A samples','Accuracy is the best metric for imbalanced data'],
+        correct: 1,
+        explain: 'With 97% majority class, a naive model predicting all Class A achieves 97% accuracy. Accuracy is misleading for imbalanced data. F1-Score, Precision-Recall curve, or AUC-ROC are better metrics.'
+      },
+      {
+        q: 'Which feature scaling technique is MOST appropriate when your data has significant outliers?',
+        opts: ['Min-Max Normalization','Z-score Standardization','Robust Scaling (using median and IQR)','No scaling needed'],
+        correct: 2,
+        explain: 'Robust scaling uses median and IQR, which are not affected by outliers. Min-Max is heavily affected by outliers (they determine min/max). Z-score uses mean and std which are also sensitive to outliers.'
+      },
+      {
+        q: 'Which ML algorithms do NOT require feature scaling?',
+        opts: ['K-Nearest Neighbors and SVM','Decision Trees and Random Forests','Neural Networks and Logistic Regression','PCA and Linear Regression'],
+        correct: 1,
+        explain: 'Tree-based algorithms (Decision Trees, Random Forests, XGBoost, Gradient Boosted Trees) split on feature values and are invariant to monotonic transformations. They do not require scaling. All distance/gradient-based methods do.'
+      },
+      {
+        q: 'An ML engineer wants to reduce 200 correlated features to a smaller set while retaining maximum variance. Which technique should they use?',
+        opts: ['t-SNE','PCA (Principal Component Analysis)','SMOTE','One-hot encoding'],
+        correct: 1,
+        explain: 'PCA finds orthogonal components that capture maximum variance, reducing correlated features to a smaller uncorrelated set. t-SNE is for visualization only and doesn\'t reduce features for training. SMOTE handles imbalanced data. One-hot encoding increases dimensions.'
+      },
+      {
+        q: 'A feature has 40% missing values and the missingness appears to be informative (customers who didn\'t provide income tend to default more). What is the BEST approach?',
+        opts: ['Drop the feature since too much is missing','Impute with the mean and proceed','Impute with median AND create a binary indicator feature for missingness','Drop all rows with missing values'],
+        correct: 2,
+        explain: 'When missingness is informative (MNAR), creating an indicator variable captures the pattern. Imputing preserves the feature for non-missing rows. Dropping would lose the informative missingness signal.'
+      },
+      {
+        q: 'Amazon QuickSight uses which technology for fast, in-memory calculations?',
+        opts: ['Redshift Spectrum','SPICE (Super-fast, Parallel, In-memory Calculation Engine)','ElastiCache','DynamoDB Accelerator (DAX)'],
+        correct: 1,
+        explain: 'SPICE is QuickSight\'s in-memory calculation engine that provides fast dashboard performance. It imports data from various sources for rapid querying and visualization.'
+      }
+    ])
+  },
+
+  // ═══════════════════════════════════════════════════════════
+  //  DOMAIN 3 — MODELING (90 min) — The Big One (36%)
+  // ═══════════════════════════════════════════════════════════
+  {
+    id:'d3-algorithms', title:'3.1 Algorithm Selection', time:'25 min',
+    domain:'Domain 3 · Modeling', badge:'Domain 3 — 36%', badgeClass:'badge-domain3',
+    content: () => `
+      <div class="fade-in">
+        <div class="module-header">
+          <span class="module-badge badge-domain3">Domain 3 — Modeling (36%)</span>
+          <h1>Algorithm Selection</h1>
+          <p>Choosing the right algorithm for the problem — the most heavily tested domain</p>
+          <div class="module-meta"><span>⏱ 25 min</span><span>📖 Lecture + Flashcards</span></div>
+        </div>
+
+        <div class="content-card">
+          <h2>Supervised Learning — Regression</h2>
+          <table class="service-table">
+            <tr><th>Algorithm</th><th>SageMaker Built-in?</th><th>Use Case</th><th>Key Notes</th></tr>
+            <tr><td><strong>Linear Learner</strong></td><td>✅ Yes</td><td>Regression & binary/multi-class classification</td><td>SGD optimizer; supports L1/L2 regularization; can output regression or classification</td></tr>
+            <tr><td><strong>XGBoost</strong></td><td>✅ Yes</td><td>Structured/tabular data regression</td><td>Most popular for tabular; handles missing values; regularization built-in</td></tr>
+            <tr><td><strong>K-Nearest Neighbors</strong></td><td>✅ Yes</td><td>Regression (average of neighbors)</td><td>Non-parametric; index-based for efficiency; dimension reduction recommended first</td></tr>
+            <tr><td><strong>DeepAR</strong></td><td>✅ Yes</td><td>Time-series forecasting</td><td>RNN-based; trains on MULTIPLE related time series; probabilistic forecasts</td></tr>
+          </table>
+        </div>
+
+        <div class="content-card">
+          <h2>Supervised Learning — Classification</h2>
+          <table class="service-table">
+            <tr><th>Algorithm</th><th>SageMaker Built-in?</th><th>Use Case</th><th>Key Notes</th></tr>
+            <tr><td><strong>XGBoost</strong></td><td>✅</td><td>Binary/multi-class on tabular data</td><td>Gradient-boosted trees; best general-purpose for structured data</td></tr>
+            <tr><td><strong>Linear Learner</strong></td><td>✅</td><td>Binary/multi-class classification</td><td>Logistic regression under the hood for classification mode</td></tr>
+            <tr><td><strong>KNN</strong></td><td>✅</td><td>Classification (majority vote)</td><td>Good baseline; no training phase; expensive at inference</td></tr>
+            <tr><td><strong>Factorization Machines</strong></td><td>✅</td><td>Click prediction, recommendation</td><td>Handles sparse high-dimensional data; pair-wise feature interactions</td></tr>
+            <tr><td><strong>Image Classification</strong></td><td>✅</td><td>Classify images into categories</td><td>ResNet-based; transfer learning supported</td></tr>
+            <tr><td><strong>Object Detection</strong></td><td>✅</td><td>Detect objects + bounding boxes</td><td>SSD / Faster R-CNN architectures</td></tr>
+          </table>
+        </div>
+
+        <div class="content-card">
+          <h2>Unsupervised Learning</h2>
+          <table class="service-table">
+            <tr><th>Algorithm</th><th>SageMaker Built-in?</th><th>Use Case</th><th>Key Notes</th></tr>
+            <tr><td><strong>K-Means</strong></td><td>✅</td><td>Clustering</td><td>Web-scale k-means++; determine k with elbow method</td></tr>
+            <tr><td><strong>PCA</strong></td><td>✅</td><td>Dimensionality reduction</td><td>Regular & randomized modes</td></tr>
+            <tr><td><strong>Random Cut Forest</strong></td><td>✅</td><td>Anomaly detection</td><td>Unsupervised; assigns anomaly scores; works in Kinesis Analytics too</td></tr>
+            <tr><td><strong>IP Insights</strong></td><td>✅</td><td>Detect suspicious IP usage</td><td>Learns IP-entity associations; fraud detection</td></tr>
+            <tr><td><strong>LDA (Latent Dirichlet Allocation)</strong></td><td>✅</td><td>Topic modeling</td><td>Discovers topics in text corpus</td></tr>
+          </table>
+        </div>
+
+        <div class="content-card">
+          <h2>NLP & Sequence Algorithms</h2>
+          <table class="service-table">
+            <tr><th>Algorithm</th><th>SageMaker Built-in?</th><th>Use Case</th><th>Key Notes</th></tr>
+            <tr><td><strong>BlazingText</strong></td><td>✅</td><td>Text classification & Word2Vec</td><td>Super-fast Word2Vec (unsupervised) + text classification (supervised)</td></tr>
+            <tr><td><strong>Seq2Seq</strong></td><td>✅</td><td>Translation, summarization</td><td>Encoder-decoder; attention mechanism; input=tokens</td></tr>
+            <tr><td><strong>Object2Vec</strong></td><td>✅</td><td>Embedding pairs of objects</td><td>General-purpose embedding; recommendation, sentence similarity</td></tr>
+            <tr><td><strong>NTM (Neural Topic Model)</strong></td><td>✅</td><td>Topic modeling</td><td>Neural network approach to topic discovery (alternative to LDA)</td></tr>
+          </table>
+        </div>
+
+        <div class="content-card">
+          <h2>Decision Framework</h2>
+          <div class="diagram-box"><pre>
+  What is your problem type?
+  │
+  ├─ Structured/Tabular Data
+  │  ├─ Classification or Regression → XGBoost (first choice)
+  │  ├─ Simple linear relationship → Linear Learner
+  │  ├─ Sparse + interactions → Factorization Machines
+  │  └─ Recommendation → Factorization Machines / Object2Vec
+  │
+  ├─ Time Series
+  │  └─ Multiple related series → DeepAR
+  │
+  ├─ Text / NLP
+  │  ├─ Classification → BlazingText (supervised)
+  │  ├─ Word embeddings → BlazingText (Word2Vec)
+  │  ├─ Topics → LDA or NTM
+  │  └─ Translation/Summary → Seq2Seq
+  │
+  ├─ Images
+  │  ├─ Classification → Image Classification (ResNet)
+  │  ├─ Detection → Object Detection (SSD)
+  │  └─ Segmentation → Semantic Segmentation
+  │
+  ├─ Anomaly Detection
+  │  └─ Random Cut Forest
+  │
+  └─ Clustering
+     └─ K-Means
+          </pre></div>
+          <div class="exam-tip">
+            <strong>XGBoost</strong> is the default "correct answer" for most structured/tabular data questions. If the question doesn't specify deep learning and the data is tabular, XGBoost is almost always the answer.
+          </div>
+        </div>
+
+        <div class="instructor-note">
+          Use the flashcard deck below to rapid-fire test students on algorithm ↔ use case mapping. This is the most heavily tested area of the exam.
+        </div>
+
+        ${renderFlashcards('algo-cards', [
+          {front:'Tabular data, regression or classification, handles missing values', back:'XGBoost — gradient-boosted trees, best for structured data'},
+          {front:'Real-time anomaly detection on streaming data', back:'Random Cut Forest (RCF) — also available in Kinesis Data Analytics'},
+          {front:'Forecast multiple related time series with probabilistic outputs', back:'DeepAR — RNN-based, trains across multiple series simultaneously'},
+          {front:'Super-fast text classification and word embeddings', back:'BlazingText — Word2Vec mode (unsupervised) + text classification mode (supervised)'},
+          {front:'Discover topics in a document corpus', back:'LDA (Latent Dirichlet Allocation) or NTM (Neural Topic Model)'},
+          {front:'Click-through prediction with sparse, high-dimensional features', back:'Factorization Machines — captures pair-wise feature interactions in sparse data'},
+          {front:'Machine translation or text summarization', back:'Seq2Seq — encoder-decoder architecture with attention mechanism'},
+          {front:'Detect suspicious IP-entity associations', back:'IP Insights — learns normal IP usage patterns, flags anomalies'},
+          {front:'Cluster data into K groups', back:'K-Means — web-scale implementation, use elbow method for K'},
+          {front:'Image classification with transfer learning', back:'Image Classification — ResNet-based, supports fine-tuning pre-trained models'},
+        ])}
+      </div>
+    `
+  },
+
+  {
+    id:'d3-training', title:'3.2 SageMaker Training & Tuning', time:'20 min',
+    domain:'Domain 3 · Modeling', badge:'Domain 3 — 36%', badgeClass:'badge-domain3',
+    content: () => `
+      <div class="fade-in">
+        <div class="module-header">
+          <span class="module-badge badge-domain3">Domain 3 — Modeling (36%)</span>
+          <h1>SageMaker Training & Hyperparameter Tuning</h1>
+          <p>Training infrastructure, input modes, and automatic model tuning</p>
+          <div class="module-meta"><span>⏱ 20 min</span><span>📖 Lecture + Diagram</span></div>
+        </div>
+
+        <div class="content-card">
+          <h2>SageMaker Training Architecture</h2>
+          <div class="diagram-box"><pre>
+  ┌─────────────┐      ┌───────────────────────────────┐      ┌─────────────┐
+  │   S3 Input  │─────▶│     Training Instance(s)      │─────▶│  S3 Output  │
+  │  (Data)     │      │  ┌─────────────────────────┐  │      │ (model.tar) │
+  │             │      │  │   Docker Container      │  │      │             │
+  │             │      │  │  ┌───────────────────┐  │  │      │             │
+  │             │      │  │  │ Training Script   │  │  │      │             │
+  │             │      │  │  │ (your code or     │  │  │      │             │
+  │             │      │  │  │  built-in algo)   │  │  │      │             │
+  │             │      │  │  └───────────────────┘  │  │      │             │
+  │             │      │  └─────────────────────────┘  │      │             │
+  └─────────────┘      └───────────────────────────────┘      └─────────────┘
+                              │             │
+                        /opt/ml/input   /opt/ml/model
+          </pre></div>
+        </div>
+
+        <div class="content-card">
+          <h2>Training Input Modes</h2>
+          <table class="service-table">
+            <tr><th>Mode</th><th>How It Works</th><th>Best For</th></tr>
+            <tr><td><strong>File Mode</strong></td><td>Downloads entire dataset to instance EBS</td><td>Small-medium datasets; repeated passes</td></tr>
+            <tr><td><strong>Pipe Mode</strong></td><td>Streams data from S3 as a Linux FIFO pipe</td><td>Large datasets; faster start, no disk needed</td></tr>
+            <tr><td><strong>FastFile Mode</strong></td><td>POSIX file interface backed by S3 streaming</td><td>Random access + large data (best of both)</td></tr>
+          </table>
+          <div class="exam-tip">
+            <strong>Pipe Mode</strong> is often the answer when the question asks about training on very large datasets with reduced startup time and storage costs. FastFile is the newer option that combines benefits.
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Training Instance Types</h2>
+          <table class="service-table">
+            <tr><th>Family</th><th>Type</th><th>Use Case</th></tr>
+            <tr><td><code>ml.m5.*</code></td><td>General purpose</td><td>XGBoost, Linear Learner, preprocessing</td></tr>
+            <tr><td><code>ml.c5.*</code></td><td>Compute optimized</td><td>CPU-intensive algorithms</td></tr>
+            <tr><td><code>ml.p3.*, ml.p4d.*</code></td><td>GPU</td><td>Deep learning (CNN, RNN, transformers)</td></tr>
+            <tr><td><code>ml.g4dn.*</code></td><td>GPU (cost-effective)</td><td>Inference + light training</td></tr>
+            <tr><td><code>ml.trn1.*</code></td><td>Trainium</td><td>Cost-optimized deep learning training</td></tr>
+            <tr><td><code>ml.inf1.*</code></td><td>Inferentia</td><td>High-throughput inference</td></tr>
+          </table>
+          <div class="key-concept">
+            <strong>Managed Spot Training:</strong> Use Spot instances to reduce training costs by up to 90%. SageMaker manages interruptions with checkpointing. Requires setting checkpoints in S3.
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Distributed Training Strategies</h2>
+          <h3>Data Parallelism</h3>
+          <ul>
+            <li>Split data across multiple GPUs/instances</li>
+            <li>Each has a full copy of the model</li>
+            <li>Gradients are synchronized (AllReduce)</li>
+            <li>Use when: dataset is large, model fits in single GPU memory</li>
+          </ul>
+          <h3>Model Parallelism</h3>
+          <ul>
+            <li>Split the MODEL across multiple GPUs</li>
+            <li>Each GPU holds a portion of layers</li>
+            <li>Use when: model is too large for a single GPU</li>
+          </ul>
+          <div class="exam-tip">
+            SageMaker provides both <strong>SageMaker Distributed Data Parallel</strong> and <strong>SageMaker Distributed Model Parallel</strong> libraries. Data parallel is more common; model parallel is for huge models (billions of parameters).
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Automatic Model Tuning (HPO)</h2>
+          <ul>
+            <li><strong>Bayesian Optimization</strong> (default) — learns from previous trials, most efficient</li>
+            <li><strong>Random Search</strong> — good for initial exploration</li>
+            <li><strong>Grid Search</strong> — exhaustive, not available in SageMaker (use Random/Bayesian)</li>
+            <li><strong>Hyperband</strong> — early stopping of poorly-performing trials</li>
+          </ul>
+          <h3>Key Hyperparameters by Algorithm</h3>
+          <table class="service-table">
+            <tr><th>Algorithm</th><th>Critical Hyperparameters</th></tr>
+            <tr><td>XGBoost</td><td>max_depth, eta (learning rate), num_round, subsample, min_child_weight</td></tr>
+            <tr><td>Linear Learner</td><td>learning_rate, l1 (Lasso), wd (L2/weight decay), mini_batch_size</td></tr>
+            <tr><td>Deep Learning</td><td>learning_rate, batch_size, epochs, optimizer, dropout</td></tr>
+            <tr><td>K-Means</td><td>k (num clusters), init_method, extra_center_factor</td></tr>
+          </table>
+          <div class="key-concept">
+            <strong>Warm Start:</strong> Automatic Model Tuning supports warm start — transfer knowledge from previous tuning jobs to new ones, saving time and cost.
+          </div>
+        </div>
+      </div>
+    `
+  },
+
+  {
+    id:'d3-evaluation', title:'3.3 Model Evaluation & Regularization', time:'20 min',
+    domain:'Domain 3 · Modeling', badge:'Domain 3 — 36%', badgeClass:'badge-domain3',
+    content: () => `
+      <div class="fade-in">
+        <div class="module-header">
+          <span class="module-badge badge-domain3">Domain 3 — Modeling (36%)</span>
+          <h1>Model Evaluation & Regularization</h1>
+          <p>Metrics, validation strategies, and preventing overfitting</p>
+          <div class="module-meta"><span>⏱ 20 min</span><span>📖 Lecture + Discussion</span></div>
+        </div>
+
+        <div class="content-card">
+          <h2>Classification Metrics</h2>
+          <table class="service-table">
+            <tr><th>Metric</th><th>Formula</th><th>When to Optimize</th></tr>
+            <tr><td><strong>Accuracy</strong></td><td>(TP+TN)/(TP+TN+FP+FN)</td><td>Balanced classes only</td></tr>
+            <tr><td><strong>Precision</strong></td><td>TP/(TP+FP)</td><td>Minimize false positives (spam filter)</td></tr>
+            <tr><td><strong>Recall (Sensitivity)</strong></td><td>TP/(TP+FN)</td><td>Minimize false negatives (disease detection)</td></tr>
+            <tr><td><strong>F1 Score</strong></td><td>2×(P×R)/(P+R)</td><td>Balance precision and recall</td></tr>
+            <tr><td><strong>AUC-ROC</strong></td><td>Area under ROC curve</td><td>Overall classifier performance; threshold-independent</td></tr>
+            <tr><td><strong>Specificity</strong></td><td>TN/(TN+FP)</td><td>Minimize false positives for negative class</td></tr>
+          </table>
+          <div class="exam-tip">
+            <strong>Key exam pattern:</strong><br>
+            • "Minimize false negatives" (e.g., cancer screening) → optimize <strong>Recall</strong><br>
+            • "Minimize false positives" (e.g., spam → inbox) → optimize <strong>Precision</strong><br>
+            • Imbalanced dataset → use <strong>AUC-ROC</strong> or <strong>F1</strong>, NOT accuracy
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Confusion Matrix Deep Dive</h2>
+          <div class="diagram-box"><pre>
+                        Predicted
+                    Positive  Negative
+  Actual  Positive  [ TP    |   FN  ]     ← Recall = TP/(TP+FN)
+          Negative  [ FP    |   TN  ]
+
+          Precision = TP/(TP+FP)  ↑
+          (column-wise)
+
+  Type I Error  = False Positive (FP) — "crying wolf"
+  Type II Error = False Negative (FN) — "missed detection"
+          </pre></div>
+        </div>
+
+        <div class="content-card">
+          <h2>Regression Metrics</h2>
+          <table class="service-table">
+            <tr><th>Metric</th><th>Notes</th></tr>
+            <tr><td><strong>MSE (Mean Squared Error)</strong></td><td>Penalizes large errors more; sensitive to outliers</td></tr>
+            <tr><td><strong>RMSE (Root MSE)</strong></td><td>Same units as target; most common regression metric</td></tr>
+            <tr><td><strong>MAE (Mean Absolute Error)</strong></td><td>Robust to outliers; equal weight to all errors</td></tr>
+            <tr><td><strong>R² (Coefficient of Determination)</strong></td><td>% of variance explained; 1 = perfect, 0 = baseline</td></tr>
+            <tr><td><strong>MAPE</strong></td><td>Percentage-based; good for interpretability</td></tr>
+          </table>
+        </div>
+
+        <div class="content-card">
+          <h2>Overfitting vs Underfitting</h2>
+          <table class="service-table">
+            <tr><th></th><th>Underfitting (High Bias)</th><th>Overfitting (High Variance)</th></tr>
+            <tr><td><strong>Symptom</strong></td><td>Poor on training AND validation</td><td>Great on training, poor on validation</td></tr>
+            <tr><td><strong>Cause</strong></td><td>Model too simple</td><td>Model too complex; memorizing noise</td></tr>
+            <tr><td><strong>Fix</strong></td><td>More features, complex model, less regularization</td><td>More data, regularization, simpler model, dropout</td></tr>
+          </table>
+        </div>
+
+        <div class="content-card">
+          <h2>Regularization Techniques</h2>
+          <h3>L1 (Lasso) Regularization</h3>
+          <ul>
+            <li>Adds absolute value of weights to loss</li>
+            <li>Drives some weights to exactly zero → feature selection</li>
+            <li>Creates sparse models</li>
+          </ul>
+          <h3>L2 (Ridge) Regularization</h3>
+          <ul>
+            <li>Adds squared weights to loss</li>
+            <li>Shrinks weights but doesn't zero them out</li>
+            <li>Handles multicollinearity</li>
+          </ul>
+          <h3>Elastic Net</h3>
+          <ul><li>Combines L1 + L2</li></ul>
+          <h3>Dropout (Neural Networks)</h3>
+          <ul>
+            <li>Randomly drops neurons during training</li>
+            <li>Prevents co-adaptation; acts like ensemble</li>
+            <li>Typical rate: 0.2–0.5</li>
+          </ul>
+          <h3>Early Stopping</h3>
+          <ul>
+            <li>Stop training when validation loss stops improving</li>
+            <li>Prevents training too long on noise</li>
+          </ul>
+          <div class="exam-tip">
+            <strong>L1 → feature selection</strong> (zeroes out unimportant features).<br>
+            <strong>L2 → prevents overfitting</strong> (shrinks all weights).<br>
+            This distinction is tested frequently.
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Validation Strategies</h2>
+          <ul>
+            <li><strong>Train/Validation/Test Split:</strong> Typical 70/15/15 or 80/10/10</li>
+            <li><strong>K-Fold Cross-Validation:</strong> K splits, train on K-1, validate on 1, rotate</li>
+            <li><strong>Stratified K-Fold:</strong> Preserves class distribution in each fold — use for imbalanced data</li>
+            <li><strong>Time-Series Split:</strong> Always train on past, validate on future — never shuffle!</li>
+          </ul>
+          <div class="key-concept">
+            <strong>Data leakage:</strong> When information from the test set leaks into training. Common causes: scaling before splitting, using future data for past predictions, target encoding without cross-validation.
+          </div>
+        </div>
+
+        <div class="instructor-note">
+          <strong>Interactive exercise:</strong> Present a scenario: "Your model has 99% training accuracy and 60% validation accuracy." Ask students to diagnose (overfitting) and propose at least 3 solutions (more data, regularization, dropout, simpler model, early stopping, data augmentation).
+        </div>
+      </div>
+    `
+  },
+
+  {
+    id:'d3-deeplearning', title:'3.4 Deep Learning Concepts', time:'15 min',
+    domain:'Domain 3 · Modeling', badge:'Domain 3 — 36%', badgeClass:'badge-domain3',
+    content: () => `
+      <div class="fade-in">
+        <div class="module-header">
+          <span class="module-badge badge-domain3">Domain 3 — Modeling (36%)</span>
+          <h1>Deep Learning Concepts</h1>
+          <p>Neural networks, CNNs, RNNs, and transfer learning</p>
+          <div class="module-meta"><span>⏱ 15 min</span><span>📖 Lecture</span></div>
+        </div>
+
+        <div class="content-card">
+          <h2>Neural Network Fundamentals</h2>
+          <h3>Activation Functions</h3>
+          <table class="service-table">
+            <tr><th>Function</th><th>Range</th><th>Use Case</th></tr>
+            <tr><td><strong>ReLU</strong></td><td>[0, ∞)</td><td>Hidden layers (default choice); fast; avoids vanishing gradient</td></tr>
+            <tr><td><strong>Sigmoid</strong></td><td>(0, 1)</td><td>Binary classification output; probabilities</td></tr>
+            <tr><td><strong>Softmax</strong></td><td>(0, 1) sums to 1</td><td>Multi-class classification output</td></tr>
+            <tr><td><strong>Tanh</strong></td><td>(-1, 1)</td><td>RNN hidden states; zero-centered</td></tr>
+          </table>
+          <div class="exam-tip">
+            Output layer activation:<br>
+            • Binary classification → <strong>Sigmoid</strong><br>
+            • Multi-class classification → <strong>Softmax</strong><br>
+            • Regression → <strong>Linear (no activation)</strong>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>CNN (Convolutional Neural Networks)</h2>
+          <ul>
+            <li><strong>Convolution layers:</strong> extract spatial features (edges, textures, patterns)</li>
+            <li><strong>Pooling layers:</strong> reduce spatial dimensions (Max Pooling most common)</li>
+            <li><strong>Fully Connected layers:</strong> final classification/regression</li>
+            <li>Best for: image classification, object detection, semantic segmentation</li>
+          </ul>
+          <h3>Key Architectures</h3>
+          <ul>
+            <li><strong>ResNet:</strong> skip connections; used in SageMaker Image Classification</li>
+            <li><strong>VGG:</strong> simple, deep; good for transfer learning</li>
+            <li><strong>YOLO / SSD:</strong> real-time object detection</li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>RNN / LSTM / GRU</h2>
+          <ul>
+            <li><strong>RNN:</strong> sequential data, but suffers from vanishing gradient</li>
+            <li><strong>LSTM:</strong> Long Short-Term Memory — gates (forget, input, output) to handle long sequences</li>
+            <li><strong>GRU:</strong> Gated Recurrent Unit — simplified LSTM, fewer parameters</li>
+            <li>Best for: time series, NLP, speech recognition</li>
+            <li><strong>DeepAR</strong> uses LSTMs internally for time-series forecasting</li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>Transfer Learning</h2>
+          <ul>
+            <li>Use a pre-trained model (trained on large dataset) and fine-tune on your data</li>
+            <li>Freeze early layers (general features), train later layers (specific features)</li>
+            <li>SageMaker Image Classification supports transfer learning with ResNet</li>
+            <li>Hugging Face models available on SageMaker for NLP transfer learning</li>
+          </ul>
+          <div class="key-concept">
+            <strong>When to use:</strong> Small dataset + similar domain to pre-trained model = perfect for transfer learning. It dramatically reduces training time and data requirements.
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Optimizers</h2>
+          <table class="service-table">
+            <tr><th>Optimizer</th><th>Key Property</th></tr>
+            <tr><td><strong>SGD</strong></td><td>Simple, may oscillate; good with momentum</td></tr>
+            <tr><td><strong>Adam</strong></td><td>Adaptive learning rates; default choice for most DL</td></tr>
+            <tr><td><strong>RMSprop</strong></td><td>Good for RNNs; adapts learning rate per parameter</td></tr>
+            <tr><td><strong>Adagrad</strong></td><td>Adapts to sparse features; learning rate decays</td></tr>
+          </table>
+        </div>
+
+        <div class="content-card">
+          <h2>Vanishing & Exploding Gradients</h2>
+          <ul>
+            <li><strong>Vanishing:</strong> gradients shrink to ~0 in deep nets → early layers don't learn</li>
+            <li>Solutions: ReLU activation, LSTM/GRU, Batch Normalization, skip connections (ResNet)</li>
+            <li><strong>Exploding:</strong> gradients grow very large → unstable training</li>
+            <li>Solutions: gradient clipping, proper weight initialization, lower learning rate</li>
+          </ul>
+        </div>
+      </div>
+    `
+  },
+
+  {
+    id:'d3-quiz', title:'3.5 Domain 3 Quiz', time:'15 min',
+    domain:'Domain 3 · Modeling', badge:'Quiz', badgeClass:'badge-domain3',
+    content: () => renderQuiz('d3', [
+      {
+        q: 'A company wants to predict customer churn using structured tabular data (demographics, purchase history, support tickets). Which SageMaker algorithm is the BEST first choice?',
+        opts: ['Image Classification','DeepAR','XGBoost','Seq2Seq'],
+        correct: 2,
+        explain: 'XGBoost is the gold standard for structured/tabular data classification problems. It handles mixed feature types, missing values, and typically outperforms other algorithms on tabular data without extensive feature engineering.'
+      },
+      {
+        q: 'A model achieves 95% training accuracy but only 62% validation accuracy. What is the MOST likely problem?',
+        opts: ['Underfitting — the model is too simple','Overfitting — the model is too complex','Data leakage','The learning rate is too low'],
+        correct: 1,
+        explain: 'High training accuracy with low validation accuracy is the classic signature of overfitting (high variance). The model has memorized the training data but fails to generalize. Solutions: regularization, more data, simpler model, dropout, early stopping.'
+      },
+      {
+        q: 'For a medical diagnosis model where missing a disease (false negative) is much worse than a false alarm, which metric should you optimize?',
+        opts: ['Precision','Accuracy','Recall (Sensitivity)','Specificity'],
+        correct: 2,
+        explain: 'Recall = TP/(TP+FN). Maximizing recall minimizes false negatives, ensuring the model catches as many true positive cases as possible. In medical diagnosis, missing a disease (FN) can be life-threatening.'
+      },
+      {
+        q: 'Which regularization technique can perform feature selection by driving some feature weights to exactly zero?',
+        opts: ['L2 (Ridge) regularization','Dropout','L1 (Lasso) regularization','Batch Normalization'],
+        correct: 2,
+        explain: 'L1 regularization adds |weights| to the loss function, which can drive individual weights to exactly zero, effectively removing those features. L2 shrinks weights but doesn\'t zero them out.'
+      },
+      {
+        q: 'You need to forecast demand for 500 products across 50 stores, each with different seasonal patterns. Which SageMaker algorithm is designed for this?',
+        opts: ['Linear Learner','XGBoost with time features','DeepAR','Random Cut Forest'],
+        correct: 2,
+        explain: 'DeepAR is specifically designed for forecasting multiple related time series simultaneously. It trains a single model across all series, learning shared patterns while respecting individual series behavior. It provides probabilistic forecasts.'
+      },
+      {
+        q: 'In a neural network for multi-class classification (10 classes), what activation function should the output layer use?',
+        opts: ['ReLU','Sigmoid','Softmax','Tanh'],
+        correct: 2,
+        explain: 'Softmax converts the output layer into a probability distribution across all classes (outputs sum to 1). For multi-class classification, softmax is the standard output activation. Sigmoid is for binary classification.'
+      },
+      {
+        q: 'What is the PRIMARY advantage of Pipe Mode over File Mode for SageMaker training?',
+        opts: ['Higher model accuracy','Faster startup time and reduced storage requirements for large datasets','Better hyperparameter tuning','Support for more algorithms'],
+        correct: 1,
+        explain: 'Pipe Mode streams data directly from S3 without downloading the entire dataset first. This reduces startup time (no download wait) and eliminates the need for large EBS volumes, making it ideal for very large datasets.'
+      },
+      {
+        q: 'SageMaker Automatic Model Tuning uses which optimization strategy by default?',
+        opts: ['Grid Search','Random Search','Bayesian Optimization','Gradient Descent'],
+        correct: 2,
+        explain: 'SageMaker HPO uses Bayesian optimization by default. It models the objective function and makes intelligent decisions about which hyperparameters to try next, learning from previous evaluations. This is more efficient than random or grid search.'
+      },
+      {
+        q: 'Which deep learning technique is MOST effective when you have a small image dataset but a model pre-trained on a large dataset (ImageNet)?',
+        opts: ['Data augmentation only','Transfer learning — fine-tune the pre-trained model','Train from scratch with a smaller architecture','Use unsupervised pre-training'],
+        correct: 1,
+        explain: 'Transfer learning leverages features learned from a large dataset. Freeze early layers (which learn general features like edges/textures) and fine-tune later layers on your specific data. This works well with small datasets.'
+      },
+      {
+        q: 'A text classification task requires classifying millions of short documents. You need the fastest training possible. Which SageMaker algorithm should you use?',
+        opts: ['Seq2Seq','Object2Vec','BlazingText in supervised mode','NTM (Neural Topic Model)'],
+        correct: 2,
+        explain: 'BlazingText in supervised mode is optimized for extremely fast text classification. It\'s based on the fastText algorithm and can train on billions of words in minutes. Seq2Seq is for translation/summarization, not classification.'
+      }
+    ])
+  },
+
+  {
+    id:'d3-break', title:'☕ Break (10 min)', time:'10 min',
+    domain:'Break', badge:'', badgeClass:'',
+    content: () => `
+      <div class="fade-in" style="text-align:center;padding:80px 20px">
+        <div style="font-size:4rem;margin-bottom:20px">☕</div>
+        <h1>10-Minute Break</h1>
+        <p style="color:var(--text-muted);margin:12px 0">We're halfway through! Great progress.</p>
+        <div style="margin:24px auto;max-width:400px;text-align:left">
+          <p style="font-size:.9rem;color:var(--text-muted);margin-bottom:8px"><strong>✓ Covered:</strong></p>
+          <p style="font-size:.85rem;color:var(--success)">Domain 1: Data Engineering (20%)</p>
+          <p style="font-size:.85rem;color:var(--success)">Domain 2: Exploratory Data Analysis (24%)</p>
+          <p style="font-size:.85rem;color:var(--success)">Domain 3: Modeling (36%)</p>
+          <p style="font-size:.9rem;color:var(--text-muted);margin:12px 0 8px"><strong>→ Up Next:</strong></p>
+          <p style="font-size:.85rem;color:var(--aws-orange)">Domain 4: ML Implementation & Operations (20%)</p>
+        </div>
+        <button class="btn btn-orange" style="margin-top:24px" onclick="goToModule(${13})">Continue →</button>
+      </div>
+    `
+  },
+
+  // ═══════════════════════════════════════════════════════════
+  //  DOMAIN 4 — ML IMPLEMENTATION & OPERATIONS (55 min)
+  // ═══════════════════════════════════════════════════════════
+  {
+    id:'d4-deploy', title:'4.1 Model Deployment', time:'20 min',
+    domain:'Domain 4 · MLOps', badge:'Domain 4 — 20%', badgeClass:'badge-domain4',
+    content: () => `
+      <div class="fade-in">
+        <div class="module-header">
+          <span class="module-badge badge-domain4">Domain 4 — ML Implementation & Operations (20%)</span>
+          <h1>Model Deployment & Inference</h1>
+          <p>Getting models into production — endpoints, batch, and edge</p>
+          <div class="module-meta"><span>⏱ 20 min</span><span>📖 Lecture + Diagram</span></div>
+        </div>
+
+        <div class="content-card">
+          <h2>SageMaker Inference Options</h2>
+          <table class="service-table">
+            <tr><th>Type</th><th>Latency</th><th>Use Case</th><th>Scaling</th></tr>
+            <tr><td><strong>Real-time Endpoint</strong></td><td>Milliseconds</td><td>Interactive apps, APIs</td><td>Auto-scaling on CloudWatch metrics</td></tr>
+            <tr><td><strong>Serverless Inference</strong></td><td>Seconds (cold start)</td><td>Intermittent/unpredictable traffic</td><td>Scales to zero, auto-scales</td></tr>
+            <tr><td><strong>Batch Transform</strong></td><td>Minutes-hours</td><td>Score entire dataset offline</td><td>Managed cluster, shut down after</td></tr>
+            <tr><td><strong>Async Inference</strong></td><td>Seconds-minutes</td><td>Large payloads, long processing</td><td>Scales to zero; queues requests</td></tr>
+          </table>
+          <div class="exam-tip">
+            <strong>Key decision point:</strong><br>
+            • Real-time, always-on traffic → <strong>Real-time Endpoint</strong><br>
+            • Intermittent, scale-to-zero needed → <strong>Serverless Inference</strong><br>
+            • Large offline scoring → <strong>Batch Transform</strong><br>
+            • Large payloads (video, genomics) → <strong>Async Inference</strong>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Deployment Strategies</h2>
+          <h3>Blue/Green (Canary) Deployment</h3>
+          <ul>
+            <li>Deploy new model alongside old; shift traffic gradually</li>
+            <li>SageMaker supports production variants with traffic splitting</li>
+            <li>Example: 90% to Model A, 10% to Model B → monitor → shift</li>
+          </ul>
+          <h3>A/B Testing</h3>
+          <ul>
+            <li>Multiple production variants on same endpoint</li>
+            <li>Set traffic distribution with <code>InitialVariantWeight</code></li>
+            <li>Compare model performance with real traffic</li>
+          </ul>
+          <h3>Shadow Testing</h3>
+          <ul>
+            <li>New model receives traffic but responses are not served to users</li>
+            <li>Compare new model behavior without risk</li>
+          </ul>
+          <div class="key-concept">
+            <strong>Multi-Model Endpoints (MME):</strong> Host thousands of models on a single endpoint. Models are loaded/unloaded dynamically. Cost-effective for per-customer or per-product models.
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Model Optimization for Inference</h2>
+          <table class="service-table">
+            <tr><th>Technique</th><th>What It Does</th><th>Tool</th></tr>
+            <tr><td><strong>SageMaker Neo</strong></td><td>Compiles model for target hardware (ARM, GPU, Inferentia)</td><td>Built into SageMaker</td></tr>
+            <tr><td><strong>Model Quantization</strong></td><td>Reduce precision (FP32 → INT8)</td><td>Neo, TensorRT</td></tr>
+            <tr><td><strong>Model Pruning</strong></td><td>Remove unnecessary weights/neurons</td><td>Custom scripts</td></tr>
+            <tr><td><strong>Knowledge Distillation</strong></td><td>Train small model to mimic large model</td><td>Custom training</td></tr>
+          </table>
+        </div>
+
+        <div class="content-card">
+          <h2>Edge Deployment</h2>
+          <ul>
+            <li><strong>SageMaker Edge Manager:</strong> deploy, monitor, and manage models on edge devices</li>
+            <li><strong>AWS IoT Greengrass:</strong> run ML inference on edge (Lambda + ML models)</li>
+            <li><strong>SageMaker Neo:</strong> compile for edge hardware (ARM, x86, GPU)</li>
+            <li><strong>AWS Panorama:</strong> computer vision at the edge (cameras)</li>
+          </ul>
+          <div class="exam-tip">
+            For edge deployment, the flow is typically: <strong>Train in cloud → Compile with Neo → Deploy with Edge Manager/IoT Greengrass</strong>. Know this pipeline.
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Inference Pipeline</h2>
+          <div class="diagram-box"><pre>
+  ┌──────────┐    ┌──────────┐    ┌──────────┐
+  │ Container│───▶│ Container│───▶│ Container│
+  │ Pre-     │    │ Model    │    │ Post-    │
+  │ process  │    │ Inference│    │ process  │
+  └──────────┘    └──────────┘    └──────────┘
+
+  SageMaker Inference Pipeline: chain 2-15 containers
+  in a linear sequence on a single endpoint.
+  Use for: feature transform → predict → post-process
+          </pre></div>
+        </div>
+
+        <div class="content-card">
+          <h2>Elastic Inference (Legacy) & Inferentia</h2>
+          <ul>
+            <li><strong>Elastic Inference:</strong> attach fractional GPU to CPU instance — deprecated in favor of Inferentia</li>
+            <li><strong>AWS Inferentia (ml.inf1/ml.inf2):</strong> purpose-built chip for inference</li>
+            <li>Up to 2.3x throughput and 70% lower cost vs GPU for inference</li>
+            <li>Use <strong>AWS Neuron SDK</strong> to compile models for Inferentia</li>
+          </ul>
+        </div>
+      </div>
+    `
+  },
+
+  {
+    id:'d4-mlops', title:'4.2 MLOps & Security', time:'20 min',
+    domain:'Domain 4 · MLOps', badge:'Domain 4 — 20%', badgeClass:'badge-domain4',
+    content: () => `
+      <div class="fade-in">
+        <div class="module-header">
+          <span class="module-badge badge-domain4">Domain 4 — ML Implementation & Operations (20%)</span>
+          <h1>MLOps, Security & Monitoring</h1>
+          <p>Production ML lifecycle, governance, and security</p>
+          <div class="module-meta"><span>⏱ 20 min</span><span>📖 Lecture</span></div>
+        </div>
+
+        <div class="content-card">
+          <h2>SageMaker MLOps Features</h2>
+          <h3>SageMaker Pipelines</h3>
+          <ul>
+            <li>Native CI/CD for ML — define workflows as DAGs</li>
+            <li>Steps: Processing, Training, Tuning, Transform, Register, Condition</li>
+            <li>Integrates with SageMaker Experiments for tracking</li>
+          </ul>
+          <h3>SageMaker Model Registry</h3>
+          <ul>
+            <li>Central catalog of trained models</li>
+            <li>Version tracking, approval workflow (Pending → Approved → Rejected)</li>
+            <li>Stores model metadata, metrics, lineage</li>
+          </ul>
+          <h3>SageMaker Experiments</h3>
+          <ul>
+            <li>Track, compare, and organize ML experiments</li>
+            <li>Components: Experiment → Trial → Trial Component</li>
+            <li>Log metrics, parameters, artifacts</li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>Model Monitoring</h2>
+          <table class="service-table">
+            <tr><th>Monitor Type</th><th>What It Detects</th><th>How</th></tr>
+            <tr><td><strong>Data Quality</strong></td><td>Schema changes, missing values, outliers</td><td>Compare live data vs training baseline</td></tr>
+            <tr><td><strong>Model Quality</strong></td><td>Accuracy/precision/recall degradation</td><td>Compare predictions vs ground truth</td></tr>
+            <tr><td><strong>Bias Drift</strong></td><td>Changes in bias metrics over time</td><td>SageMaker Clarify continuous monitoring</td></tr>
+            <tr><td><strong>Feature Attribution Drift</strong></td><td>Changes in feature importance</td><td>SHAP value monitoring over time</td></tr>
+          </table>
+          <div class="key-concept">
+            <strong>Data Drift vs Concept Drift:</strong><br>
+            • <strong>Data drift:</strong> input feature distribution changes (e.g., new user demographics)<br>
+            • <strong>Concept drift:</strong> relationship between features and target changes (e.g., pandemic changes buying patterns)
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>SageMaker Clarify — Bias & Explainability</h2>
+          <h3>Pre-training Bias Metrics</h3>
+          <ul>
+            <li><strong>Class Imbalance (CI):</strong> unequal representation of classes</li>
+            <li><strong>Difference in Proportions of Labels (DPL):</strong> label distribution differs across groups</li>
+          </ul>
+          <h3>Post-training Bias Metrics</h3>
+          <ul>
+            <li><strong>Disparate Impact (DI):</strong> ratio of positive outcomes between groups</li>
+            <li><strong>Difference in Conditional Acceptance (DCA)</strong></li>
+          </ul>
+          <h3>Explainability</h3>
+          <ul>
+            <li>Uses <strong>SHAP (SHapley Additive exPlanations)</strong> values</li>
+            <li>Feature attribution: which features influenced each prediction</li>
+            <li>Global explanations (overall feature importance) + local (per prediction)</li>
+          </ul>
+          <div class="exam-tip">
+            SageMaker Clarify = bias detection + model explainability. It runs as a <strong>Processing job</strong>. Know that it uses SHAP values for feature attribution.
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Security & Compliance</h2>
+          <h3>Data Encryption</h3>
+          <ul>
+            <li><strong>At rest:</strong> S3 SSE (SSE-S3, SSE-KMS, SSE-C), EBS encryption</li>
+            <li><strong>In transit:</strong> TLS/SSL — SageMaker enforces HTTPS</li>
+            <li><strong>SageMaker:</strong> KMS keys for training volumes, S3 data, notebook instances</li>
+          </ul>
+          <h3>Network Isolation</h3>
+          <ul>
+            <li><strong>VPC:</strong> Run SageMaker in a VPC with private subnets</li>
+            <li><strong>VPC Endpoints (PrivateLink):</strong> Access S3/SageMaker API without internet</li>
+            <li><strong>Network Isolation mode:</strong> training containers have NO internet access</li>
+            <li><strong>Inter-container encryption:</strong> encrypt data between distributed training instances</li>
+          </ul>
+          <h3>Access Control</h3>
+          <ul>
+            <li><strong>IAM Roles:</strong> SageMaker execution role — least privilege</li>
+            <li><strong>SageMaker Studio:</strong> user profiles with separate IAM roles</li>
+            <li><strong>Resource-based policies:</strong> S3 bucket policies for data access</li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>SageMaker Feature Store</h2>
+          <ul>
+            <li>Central repository for ML features — ensures consistency</li>
+            <li><strong>Online store:</strong> low-latency reads for real-time inference</li>
+            <li><strong>Offline store:</strong> historical features in S3 for training</li>
+            <li>Feature groups define schema; automatic data ingestion</li>
+            <li>Prevents feature computation inconsistency (training/serving skew)</li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>AWS AI Services (Managed ML)</h2>
+          <table class="service-table">
+            <tr><th>Service</th><th>Capability</th></tr>
+            <tr><td><strong>Amazon Rekognition</strong></td><td>Image/video analysis — face detection, labels, text in images, content moderation</td></tr>
+            <tr><td><strong>Amazon Comprehend</strong></td><td>NLP — sentiment, entities, key phrases, topics, PII detection</td></tr>
+            <tr><td><strong>Amazon Translate</strong></td><td>Neural machine translation</td></tr>
+            <tr><td><strong>Amazon Transcribe</strong></td><td>Speech-to-text</td></tr>
+            <tr><td><strong>Amazon Polly</strong></td><td>Text-to-speech</td></tr>
+            <tr><td><strong>Amazon Lex</strong></td><td>Conversational bots (powers Alexa)</td></tr>
+            <tr><td><strong>Amazon Textract</strong></td><td>Extract text + data from documents (forms, tables)</td></tr>
+            <tr><td><strong>Amazon Forecast</strong></td><td>Time-series forecasting service</td></tr>
+            <tr><td><strong>Amazon Personalize</strong></td><td>Real-time recommendation engine</td></tr>
+            <tr><td><strong>Amazon Fraud Detector</strong></td><td>Identify potentially fraudulent activities</td></tr>
+            <tr><td><strong>Amazon Kendra</strong></td><td>Intelligent document search</td></tr>
+          </table>
+          <div class="exam-tip">
+            Know when to use a managed AI service vs SageMaker. If the use case matches a service exactly (e.g., "detect sentiment in customer reviews" → Comprehend), use the managed service. Use SageMaker when you need custom models.
+          </div>
+        </div>
+
+        <div class="instructor-note">
+          <strong>Quick fire round:</strong> Name the AWS service: "Extract tables from scanned invoices?" (Textract) "Build a chatbot?" (Lex) "Detect faces in images?" (Rekognition) "Translate documents?" (Translate) "Custom recommendation engine with your data?" (Personalize)
+        </div>
+      </div>
+    `
+  },
+
+  {
+    id:'d4-quiz', title:'4.3 Domain 4 Quiz', time:'15 min',
+    domain:'Domain 4 · MLOps', badge:'Quiz', badgeClass:'badge-domain4',
+    content: () => renderQuiz('d4', [
+      {
+        q: 'A model needs to process 10 million records overnight and store predictions in S3. The model is not needed during the day. Which inference option is BEST?',
+        opts: ['Real-time endpoint with auto-scaling','Serverless Inference','Batch Transform','Async Inference'],
+        correct: 2,
+        explain: 'Batch Transform is designed for offline scoring of large datasets. It spins up instances, processes the data, writes results to S3, and shuts down. No persistent endpoint needed.'
+      },
+      {
+        q: 'A company wants to deploy a new model version but route only 5% of traffic to it initially. Which SageMaker feature enables this?',
+        opts: ['Multi-Model Endpoints','Production Variants with traffic splitting','SageMaker Neo','Inference Pipeline'],
+        correct: 1,
+        explain: 'SageMaker endpoints support multiple production variants. You can set InitialVariantWeight to control traffic distribution (e.g., 95% old model, 5% new model) for canary/A/B testing.'
+      },
+      {
+        q: 'Which SageMaker feature provides model explainability using SHAP values?',
+        opts: ['SageMaker Debugger','SageMaker Clarify','SageMaker Model Monitor','SageMaker Experiments'],
+        correct: 1,
+        explain: 'SageMaker Clarify provides both bias detection and model explainability. It uses SHAP (SHapley Additive exPlanations) values to show feature attribution — which features most influenced each prediction.'
+      },
+      {
+        q: 'A SageMaker training job needs to access data in S3 but must NOT have any internet access for security compliance. Which feature should be enabled?',
+        opts: ['VPC with NAT Gateway','Network Isolation mode','S3 VPC Endpoint only','IAM resource policies'],
+        correct: 1,
+        explain: 'Network Isolation mode (EnableNetworkIsolation=True) ensures the training container has absolutely no internet access. Data is accessed through the SageMaker-managed data channels (S3 → local storage) without network access from the container.'
+      },
+      {
+        q: 'An ML team needs to ensure consistent feature computation between training and real-time inference. Which service addresses this?',
+        opts: ['SageMaker Processing','SageMaker Feature Store','AWS Glue Data Catalog','SageMaker Model Registry'],
+        correct: 1,
+        explain: 'SageMaker Feature Store provides a centralized repository with both online (low-latency for inference) and offline (S3 for training) stores. This ensures the same feature definitions are used in training and serving, preventing training-serving skew.'
+      },
+      {
+        q: 'A company needs to extract data from scanned invoices including tables and form fields. Which AWS service should they use?',
+        opts: ['Amazon Comprehend','Amazon Rekognition','Amazon Textract','Amazon Translate'],
+        correct: 2,
+        explain: 'Amazon Textract extracts text, handwriting, tables, and form data from scanned documents. It goes beyond OCR to understand the structure of documents. Comprehend is for NLP (sentiment, entities). Rekognition is for images/video analysis.'
+      },
+      {
+        q: 'Which deployment approach lets you test a new model with real production traffic WITHOUT serving its predictions to end users?',
+        opts: ['Blue/Green deployment','A/B testing with production variants','Shadow testing','Canary deployment'],
+        correct: 2,
+        explain: 'Shadow testing sends real traffic to the new model but does not serve its responses to users. This allows you to compare the new model\'s behavior against the production model without any risk to end users.'
+      },
+      {
+        q: 'A model deployed 3 months ago is showing decreased accuracy. Investigation reveals that the input data distribution has changed. What type of drift is this?',
+        opts: ['Concept drift','Data drift (covariate shift)','Model decay','Label drift'],
+        correct: 1,
+        explain: 'Data drift (covariate shift) occurs when the distribution of input features changes over time. Concept drift is when the relationship between features and the target changes. Here, the input data distribution changed, which is data drift.'
+      }
+    ])
+  },
+
+  // ═══════════════════════════════════════════════════════════
+  //  FINAL REVIEW & PRACTICE EXAM
+  // ═══════════════════════════════════════════════════════════
+  {
+    id:'review-services', title:'5.1 Service Cheat Sheet', time:'10 min',
+    domain:'Final Review', badge:'Review', badgeClass:'badge-review',
+    content: () => `
+      <div class="fade-in">
+        <div class="module-header">
+          <span class="module-badge badge-review">Final Review</span>
+          <h1>AWS ML Service Cheat Sheet</h1>
+          <p>Quick reference — everything you need to remember</p>
+          <div class="module-meta"><span>⏱ 10 min</span><span>📋 Reference</span></div>
+        </div>
+
+        <div class="content-card">
+          <h2>SageMaker Built-in Algorithms — Quick Reference</h2>
+          <table class="service-table">
+            <tr><th>Algorithm</th><th>Type</th><th>Input</th><th>Remember</th></tr>
+            <tr><td>XGBoost</td><td>Supervised</td><td>CSV, LibSVM, Parquet, RecordIO</td><td>#1 for tabular data</td></tr>
+            <tr><td>Linear Learner</td><td>Supervised</td><td>RecordIO, CSV</td><td>Regression + Classification; normalize data first</td></tr>
+            <tr><td>KNN</td><td>Supervised</td><td>RecordIO, CSV</td><td>Index-based; sampling for large data</td></tr>
+            <tr><td>Factorization Machines</td><td>Supervised</td><td>RecordIO</td><td>Sparse data; pair-wise interactions; recommendations</td></tr>
+            <tr><td>DeepAR</td><td>Supervised</td><td>JSON Lines</td><td>Multiple time series; probabilistic</td></tr>
+            <tr><td>BlazingText</td><td>Both</td><td>Text files</td><td>Fast text classification + Word2Vec</td></tr>
+            <tr><td>Image Classification</td><td>Supervised</td><td>RecordIO, Image</td><td>ResNet; transfer learning</td></tr>
+            <tr><td>Object Detection</td><td>Supervised</td><td>RecordIO, Image+JSON</td><td>SSD + Faster R-CNN</td></tr>
+            <tr><td>Semantic Segmentation</td><td>Supervised</td><td>Image + Annotation</td><td>Pixel-level labeling</td></tr>
+            <tr><td>K-Means</td><td>Unsupervised</td><td>RecordIO, CSV</td><td>Clustering; elbow method for K</td></tr>
+            <tr><td>PCA</td><td>Unsupervised</td><td>RecordIO, CSV</td><td>Dim reduction; regular vs randomized mode</td></tr>
+            <tr><td>Random Cut Forest</td><td>Unsupervised</td><td>RecordIO, CSV</td><td>Anomaly detection; also in Kinesis Analytics</td></tr>
+            <tr><td>LDA</td><td>Unsupervised</td><td>RecordIO, CSV</td><td>Topic modeling</td></tr>
+            <tr><td>NTM</td><td>Unsupervised</td><td>RecordIO, CSV</td><td>Neural topic modeling (alternative to LDA)</td></tr>
+            <tr><td>IP Insights</td><td>Unsupervised</td><td>CSV</td><td>Suspicious IP usage patterns</td></tr>
+            <tr><td>Object2Vec</td><td>Supervised</td><td>JSON</td><td>General-purpose embedding pairs</td></tr>
+            <tr><td>Seq2Seq</td><td>Supervised</td><td>RecordIO-Protobuf</td><td>Translation, summarization</td></tr>
+          </table>
+        </div>
+
+        <div class="content-card">
+          <h2>Key Distinctions to Remember</h2>
+          <div class="key-concept">
+            <strong>Kinesis Data Streams vs Firehose:</strong> Streams = real-time, custom consumers, manage shards. Firehose = near-real-time, fully managed, direct to S3/Redshift/OpenSearch.
+          </div>
+          <div class="key-concept">
+            <strong>Glue vs EMR:</strong> Glue = serverless, less control. EMR = managed Hadoop cluster, full control, Spot instances, custom frameworks.
+          </div>
+          <div class="key-concept">
+            <strong>Batch Transform vs Real-time Endpoint:</strong> Batch = offline, large datasets. Real-time = always-on, low latency.
+          </div>
+          <div class="key-concept">
+            <strong>SageMaker Clarify vs Model Monitor:</strong> Clarify = bias + explainability. Model Monitor = data quality + model quality + drift detection.
+          </div>
+          <div class="key-concept">
+            <strong>L1 vs L2 Regularization:</strong> L1 = feature selection (zeros out weights). L2 = weight shrinkage (reduces overfitting).
+          </div>
+          <div class="key-concept">
+            <strong>Precision vs Recall:</strong> Precision = minimize FP. Recall = minimize FN. F1 = harmonic mean of both.
+          </div>
+        </div>
+      </div>
+    `
+  },
+
+  {
+    id:'final-exam', title:'5.2 Practice Exam (20 questions)', time:'25 min',
+    domain:'Final Review', badge:'Final Exam', badgeClass:'badge-review',
+    content: () => renderQuiz('final', [
+      {
+        q: 'A retail company wants to build a product recommendation system. The training data is a sparse matrix of user-product interactions. Which SageMaker algorithm should they use?',
+        opts: ['XGBoost','K-Means clustering','Factorization Machines','Linear Learner'],
+        correct: 2,
+        explain: 'Factorization Machines are designed for sparse, high-dimensional data and capture pair-wise interactions. They are ideal for recommendation systems, click prediction, and collaborative filtering.'
+      },
+      {
+        q: 'An ML engineer needs to train an XGBoost model on 500 GB of data in S3. Which input mode will provide the fastest training startup?',
+        opts: ['File Mode','Pipe Mode','FastFile Mode','Direct S3 access'],
+        correct: 1,
+        explain: 'Pipe Mode streams data from S3 directly without downloading the entire dataset first, providing the fastest startup time. File Mode would need to download all 500 GB before training begins.'
+      },
+      {
+        q: 'A healthcare company is building a model to detect rare diseases. The dataset has 99.5% healthy and 0.5% disease cases. Which is NOT an appropriate technique?',
+        opts: ['SMOTE (Synthetic Minority Over-sampling)','Using accuracy as the primary metric','Adjusting class weights in the loss function','Using AUC-ROC as the evaluation metric'],
+        correct: 1,
+        explain: 'Accuracy is misleading for highly imbalanced datasets. A naive model predicting "healthy" for everything would achieve 99.5% accuracy. SMOTE, class weights, and AUC-ROC are all appropriate for imbalanced data.'
+      },
+      {
+        q: 'Which AWS service should be used to automatically discover the schema of data stored in S3 and make it queryable?',
+        opts: ['Amazon Athena','AWS Glue Crawler → Glue Data Catalog','Amazon Redshift Spectrum','AWS Lake Formation'],
+        correct: 1,
+        explain: 'Glue Crawlers automatically discover schemas and populate the Glue Data Catalog. Once cataloged, the data becomes queryable by Athena, Redshift Spectrum, and EMR. Athena queries data but doesn\'t discover schemas.'
+      },
+      {
+        q: 'A real-time fraud detection system needs sub-second inference. The model needs to be always available. Which deployment option is correct?',
+        opts: ['Batch Transform','SageMaker Serverless Inference','SageMaker Real-time Endpoint with auto-scaling','AWS Lambda with model loaded in memory'],
+        correct: 2,
+        explain: 'Real-time endpoints provide millisecond-level latency and are always available. Auto-scaling handles traffic spikes. Serverless has cold-start latency. Batch is offline only. Lambda has size and timeout limits.'
+      },
+      {
+        q: 'An NLP team needs to classify millions of customer support tickets into categories. Training speed is the top priority. Which algorithm?',
+        opts: ['Seq2Seq','BlazingText (supervised mode)','Object2Vec','BERT fine-tuning on SageMaker'],
+        correct: 1,
+        explain: 'BlazingText in supervised mode is based on fastText and is optimized for extremely fast text classification. It can train on millions of examples in minutes, making it the fastest option for text classification.'
+      },
+      {
+        q: 'A data scientist wants to reduce 500 highly correlated features to the most important components. Which SageMaker built-in algorithm should they use?',
+        opts: ['K-Means','PCA (Principal Component Analysis)','Random Cut Forest','LDA'],
+        correct: 1,
+        explain: 'PCA is designed for dimensionality reduction. It finds orthogonal components that capture maximum variance, effectively reducing correlated features to a smaller set. SageMaker PCA supports regular and randomized modes.'
+      },
+      {
+        q: 'A SageMaker endpoint needs to host 1,000 customer-specific models cost-effectively. Which feature should be used?',
+        opts: ['Multi-Model Endpoint (MME)','1,000 separate endpoints','Inference Pipeline','SageMaker Neo'],
+        correct: 0,
+        explain: 'Multi-Model Endpoints can host thousands of models on a single endpoint. Models are loaded/unloaded dynamically based on traffic. This is far more cost-effective than deploying 1,000 separate endpoints.'
+      },
+      {
+        q: 'A company needs to detect anomalies in IoT sensor data in real-time as it streams through Kinesis. Which algorithm is available DIRECTLY in Kinesis Data Analytics?',
+        opts: ['XGBoost','K-Means','Random Cut Forest','DeepAR'],
+        correct: 2,
+        explain: 'Random Cut Forest (RCF) is available as a SQL function (RANDOM_CUT_FOREST) directly within Kinesis Data Analytics. It assigns anomaly scores to data points in the stream in real-time.'
+      },
+      {
+        q: 'What does SageMaker Ground Truth provide?',
+        opts: ['Model deployment and hosting','Data labeling with human annotators and active learning','Model monitoring and drift detection','Feature engineering automation'],
+        correct: 1,
+        explain: 'SageMaker Ground Truth is a data labeling service. It uses human annotators (Amazon Mechanical Turk, private teams, or vendors) with active learning to progressively reduce the number of labels needed by using a model to auto-label high-confidence examples.'
+      },
+      {
+        q: 'Which technique should you use when your deep learning model is too large to fit in a single GPU\'s memory during training?',
+        opts: ['Data parallelism','Model parallelism','Gradient accumulation','Batch normalization'],
+        correct: 1,
+        explain: 'Model parallelism splits the model itself across multiple GPUs, with each GPU holding a portion of the layers. Data parallelism requires the full model on each GPU, so it doesn\'t solve the "model too large" problem.'
+      },
+      {
+        q: 'A model needs to forecast sales for 200 products across 30 regions. Each product-region combination has different seasonal patterns. Which algorithm?',
+        opts: ['Linear Learner with time features','XGBoost with lag features','Amazon DeepAR','ARIMA via custom container'],
+        correct: 2,
+        explain: 'DeepAR is designed for forecasting multiple related time series. It trains a single model across all 6,000 series (200×30), learning shared patterns and individual behaviors. It outperforms traditional methods like ARIMA for multiple related series.'
+      },
+      {
+        q: 'During SageMaker training, which directory contains the trained model artifacts that get uploaded to S3?',
+        opts: ['/opt/ml/input/data','/opt/ml/model','/opt/ml/output','/opt/ml/code'],
+        correct: 1,
+        explain: 'SageMaker training containers must write model artifacts to /opt/ml/model. After training, SageMaker automatically compresses this directory into model.tar.gz and uploads it to the specified S3 output path.'
+      },
+      {
+        q: 'A company wants to build a custom chatbot. Which AWS service provides the framework for building conversational interfaces?',
+        opts: ['Amazon Comprehend','Amazon Polly','Amazon Lex','Amazon Transcribe'],
+        correct: 2,
+        explain: 'Amazon Lex provides the framework for building conversational chatbots with automatic speech recognition (ASR) and natural language understanding (NLU). It\'s the same technology that powers Alexa.'
+      },
+      {
+        q: 'Which SageMaker feature should you use to create a reproducible, automated ML workflow with data processing, training, evaluation, and conditional model registration?',
+        opts: ['SageMaker Experiments','SageMaker Pipelines','SageMaker Autopilot','AWS Step Functions'],
+        correct: 1,
+        explain: 'SageMaker Pipelines is the native CI/CD service for ML. It defines workflows as DAGs with steps for processing, training, evaluation, conditional logic, and model registration. Experiments track runs; Pipelines automate them.'
+      },
+      {
+        q: 'What is the PRIMARY purpose of inter-container traffic encryption in SageMaker distributed training?',
+        opts: ['Improve training speed','Encrypt data transferred between training instances during distributed training','Encrypt the model artifacts','Encrypt data in S3'],
+        correct: 1,
+        explain: 'Inter-container traffic encryption encrypts data transferred between instances during distributed training (e.g., gradient synchronization). This is important for compliance but may add some overhead. It\'s enabled via EnableInterContainerTrafficEncryption.'
+      },
+      {
+        q: 'A model shows that the feature "zip_code" is the most important predictor of loan approval, and this correlates strongly with race. What SageMaker tool should investigate this?',
+        opts: ['SageMaker Debugger','SageMaker Clarify','SageMaker Model Monitor','SageMaker Autopilot'],
+        correct: 1,
+        explain: 'SageMaker Clarify detects bias in data and models. It can measure pre-training bias (in the dataset) and post-training bias (in model predictions) across protected groups. It also provides SHAP-based explainability to understand feature contributions.'
+      },
+      {
+        q: 'Which combination correctly matches activation functions to their typical use?',
+        opts: ['ReLU for output layer, Sigmoid for hidden layers','Softmax for binary classification, Sigmoid for multi-class','ReLU for hidden layers, Softmax for multi-class output, Sigmoid for binary output','Tanh for all layers in CNN'],
+        correct: 2,
+        explain: 'ReLU is the default for hidden layers (avoids vanishing gradients). Softmax outputs a probability distribution for multi-class. Sigmoid outputs a single probability for binary classification. This is a fundamental pattern.'
+      },
+      {
+        q: 'An ML engineer wants to reduce inference costs by compiling a model to run efficiently on a specific hardware target. Which service should they use?',
+        opts: ['SageMaker Autopilot','SageMaker Neo','SageMaker Debugger','SageMaker Feature Store'],
+        correct: 1,
+        explain: 'SageMaker Neo compiles models for specific hardware targets (ARM, Intel, NVIDIA, Inferentia). The compiled model runs more efficiently (faster inference, smaller footprint) on the target hardware, reducing costs.'
+      },
+      {
+        q: 'A time-series dataset should be split for model validation. Which approach is correct?',
+        opts: ['Random 80/20 split','K-fold cross-validation with random shuffling','Chronological split — train on past, validate on future','Stratified sampling'],
+        correct: 2,
+        explain: 'Time-series data must be split chronologically. Training on past data and validating on future data simulates real-world usage. Random splitting would leak future information into training, causing optimistic bias and data leakage.'
+      }
+    ])
+  },
+
+  {
+    id:'test-strategy', title:'5.3 Test-Taking Strategy', time:'15 min',
+    domain:'Final Review', badge:'Strategy', badgeClass:'badge-strategy',
+    content: () => `
+      <div class="fade-in">
+        <div class="module-header">
+          <span class="module-badge badge-strategy">Exam Strategy</span>
+          <h1>Test-Taking Strategy for AWS Exams</h1>
+          <p>Battle-tested advice from people who have passed the MLS-C01</p>
+          <div class="module-meta"><span>⏱ 15 min</span><span>💬 Discussion + Tips</span></div>
+        </div>
+
+        <div class="content-card">
+          <h2>Before Exam Day</h2>
+          <h3>Study Strategy</h3>
+          <ul>
+            <li><strong>Hands-on labs are non-negotiable.</strong> Multiple passers report that reading whitepapers alone isn't enough — actually building SageMaker pipelines, running training jobs, and deploying endpoints cements the knowledge</li>
+            <li><strong>Use multiple practice exam sources.</strong> The AWS official practice exam is good but not enough. Supplement with Tutorials Dojo, Whizlabs, or Udemy practice tests. Aim to consistently score 80%+ before booking the exam</li>
+            <li><strong>Study the "why" not just the "what."</strong> AWS exams test decision-making. Don't just memorize that Firehose delivers to S3 — understand WHY you'd pick it over Kinesis Data Streams in a given scenario</li>
+            <li><strong>Focus study time proportional to domain weight.</strong> Domain 3 (Modeling) is 36% of the exam — spend the most time here. Many people under-prepare for this domain and over-prepare for Domain 1</li>
+            <li><strong>Create your own cheat sheet.</strong> The act of writing/typing your own reference doc forces active recall. Keep it to 2-3 pages max</li>
+            <li><strong>Review the AWS exam guide and sample questions.</strong> AWS publishes the official exam guide with the exact domain breakdown. The sample questions show the difficulty level and question style</li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>Day of the Exam — Logistics</h2>
+          <ul>
+            <li><strong>Online proctoring vs test center:</strong> Many test-takers recommend an in-person test center to avoid tech issues (webcam, room scans, disconnections). If you go online, test your setup the day before and use a wired internet connection</li>
+            <li><strong>Arrive early / start early.</strong> For online, log in 30 min early. For test centers, arrive 15 min early. Rushing adds stress that hurts performance</li>
+            <li><strong>You get 180 minutes for 65 questions.</strong> That's ~2 min 45 sec per question. Many passers finish with 30-45 min to spare on a first pass. Don't panic about time</li>
+            <li><strong>Bring nothing except your ID.</strong> No notes, no phone, no smartwatch. You get a whiteboard or scratch paper at the center</li>
+            <li><strong>Eat well, sleep well.</strong> Sounds obvious, but multiple test-takers credit a good night's sleep and a proper meal as underrated factors in their passing score</li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>During the Exam — Question Strategy</h2>
+
+          <div class="key-concept">
+            <strong>The Two-Pass Method (most recommended strategy):</strong> Go through ALL 65 questions in your first pass. Answer the ones you're confident about. Flag anything you're unsure of. Then do a second pass on flagged questions with your remaining time. This prevents spending 10 minutes on question #5 and then rushing questions 50-65.
+          </div>
+
+          <h3>Eliminating Wrong Answers</h3>
+          <ul>
+            <li><strong>Eliminate first, then choose.</strong> On almost every question, you can immediately eliminate 1-2 answers. Going from 4 choices to 2 doubles your odds even if you have to guess</li>
+            <li><strong>Watch for "distractor" services.</strong> AWS has many services with similar names. The exam includes wrong answers that sound plausible but don't fit. If a service doesn't match the use case, eliminate it — even if it's a real AWS service</li>
+            <li><strong>Beware of "technically correct but not best."</strong> Multiple answers may work, but the exam asks for the BEST or MOST appropriate. Look for the most complete, most managed, or most cost-effective answer depending on the question's emphasis</li>
+          </ul>
+
+          <h3>Reading the Question</h3>
+          <ul>
+            <li><strong>Read the LAST sentence first.</strong> Many exam veterans swear by this. The last sentence contains what they're actually asking. The paragraph before it is context/scenario. Knowing what's being asked helps you parse the scenario efficiently</li>
+            <li><strong>Underline keywords.</strong> Use the highlighting/strikethrough tools in the exam interface. Key phrases: "MOST cost-effective," "LEAST operational overhead," "real-time," "fully managed," "minimize latency"</li>
+            <li><strong>Watch for qualifier words.</strong> "MOST," "BEST," "LEAST," "PRIMARY" — these are signals that multiple answers could work, but only one is optimal</li>
+            <li><strong>"Minimize operational overhead"</strong> almost always means serverless / fully managed (Firehose over KDS, Glue over EMR, Serverless Inference over provisioned endpoints)</li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>AWS Exam-Specific Patterns</h2>
+          <p>Experienced test-takers have identified these recurring patterns across AWS specialty exams:</p>
+
+          <div class="exam-tip">
+            <strong>The "AWS wants you to use their managed service" rule:</strong> When in doubt, AWS exams favor their managed/serverless services over open-source or self-managed alternatives. Kinesis over Kafka, Glue over self-managed Spark, SageMaker built-in algorithms over custom containers.
+          </div>
+
+          <h3>Common Keyword → Answer Mappings</h3>
+          <table class="service-table">
+            <tr><th>When You See...</th><th>Think...</th></tr>
+            <tr><td>"fully managed" + "streaming to S3"</td><td>Kinesis Data Firehose</td></tr>
+            <tr><td>"minimize operational overhead" + ETL</td><td>AWS Glue (not EMR)</td></tr>
+            <tr><td>"tabular data" + classification/regression</td><td>XGBoost</td></tr>
+            <tr><td>"multiple related time series"</td><td>DeepAR</td></tr>
+            <tr><td>"anomaly detection" + streaming</td><td>Random Cut Forest (in Kinesis Analytics)</td></tr>
+            <tr><td>"text classification" + "fast"</td><td>BlazingText</td></tr>
+            <tr><td>"detect bias" or "model explainability"</td><td>SageMaker Clarify</td></tr>
+            <tr><td>"cost-effective inference" + intermittent traffic</td><td>Serverless Inference</td></tr>
+            <tr><td>"large offline scoring"</td><td>Batch Transform</td></tr>
+            <tr><td>"extract text from documents/forms"</td><td>Amazon Textract</td></tr>
+            <tr><td>"sentiment analysis"</td><td>Amazon Comprehend</td></tr>
+            <tr><td>"reduce training cost"</td><td>Managed Spot Training</td></tr>
+            <tr><td>"no internet access during training"</td><td>Network Isolation mode</td></tr>
+            <tr><td>"feature consistency between training and inference"</td><td>SageMaker Feature Store</td></tr>
+          </table>
+        </div>
+
+        <div class="content-card">
+          <h2>Handling Questions You Don't Know</h2>
+          <ul>
+            <li><strong>Never leave a question blank.</strong> There is no penalty for guessing on AWS exams. A blank answer is a guaranteed zero; a guess has a 25% chance</li>
+            <li><strong>Use the process of elimination.</strong> Even partial knowledge helps. If you know one option is wrong, your guess odds improve from 25% to 33%</li>
+            <li><strong>Trust your gut on second-guessing.</strong> Multiple passers report that their first instinct was usually correct. Don't change answers unless you have a clear reason to</li>
+            <li><strong>Flag and move on if stuck after 3 minutes.</strong> Spending 5+ minutes on one question means less time for questions you might actually know. Come back with fresh eyes on the second pass</li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>Time Management Blueprint</h2>
+          <div class="diagram-box"><pre>
+  ┌─────────────────────────────────────────────────────────────┐
+  │                  180 MINUTES TOTAL                          │
+  ├─────────────────────────────────────────────────────────────┤
+  │                                                             │
+  │  Pass 1: Questions 1–65                    ~100–110 min     │
+  │  ├─ Answer confident questions (~2 min each)                │
+  │  ├─ Flag uncertain ones, pick best guess, move on           │
+  │  └─ Don't get stuck on any single question                  │
+  │                                                             │
+  │  Pass 2: Review flagged questions          ~40–50 min       │
+  │  ├─ Re-read with fresh eyes                                 │
+  │  ├─ Apply elimination strategy                              │
+  │  └─ Finalize answers                                        │
+  │                                                             │
+  │  Pass 3: Final review (if time permits)    ~20–30 min       │
+  │  ├─ Skim all questions for silly mistakes                   │
+  │  ├─ Check for questions you may have misread                │
+  │  └─ Verify multi-select questions (did you pick enough?)    │
+  │                                                             │
+  └─────────────────────────────────────────────────────────────┘
+          </pre></div>
+        </div>
+
+        <div class="content-card">
+          <h2>Common Mistakes to Avoid</h2>
+          <ul>
+            <li><strong>Don't overthink it.</strong> AWS exam questions are designed to test practical knowledge, not trick you. If an answer seems straightforward and matches the scenario, it probably is correct</li>
+            <li><strong>Don't confuse "can" with "should."</strong> Many services CAN do a task, but the exam asks which SHOULD be used. A Lambda function CAN do batch processing, but Batch Transform is the right answer</li>
+            <li><strong>Watch for multi-select questions.</strong> Some questions say "Select TWO" or "Select THREE." If you only pick one, you get zero credit. Read the instructions line carefully</li>
+            <li><strong>Don't assume trick questions.</strong> Unlike some certification exams, AWS generally asks straightforward scenario-based questions. The complexity is in knowing the services, not in tricky wording</li>
+            <li><strong>Don't second-guess every answer.</strong> If you studied well and your initial answer matches your knowledge, trust it. Excessive second-guessing leads to changing correct answers to wrong ones</li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>Score & Results</h2>
+          <ul>
+            <li><strong>Scaled score: 100–1000.</strong> Passing is approximately 750 (this can vary slightly)</li>
+            <li><strong>Not all questions are scored.</strong> AWS includes ~15 unscored "pilot" questions mixed in. You won't know which ones they are, so treat every question as scored</li>
+            <li><strong>Results are usually available within 24-48 hours</strong> on your AWS Certification account, though some people report getting them in as little as a few hours</li>
+            <li><strong>You get a pass/fail and a scaled score</strong>, plus a domain-level breakdown showing which areas were strong/weak. Use this if you need to retake</li>
+            <li><strong>If you fail, you can retake after 14 days.</strong> Focus your study on the weak domains from your score report. Most people who fail report passing on their second attempt</li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>Advice from Passers — In Their Own Words</h2>
+          <div class="key-concept">
+            <strong>"I passed with 854."</strong> "The single most helpful thing was doing 400+ practice questions from 3 different sources. By the end, I could recognize question patterns instantly. The real exam felt like just another practice test."
+          </div>
+          <div class="key-concept">
+            <strong>"Failed first attempt, passed second."</strong> "First time I focused too much on SageMaker features and ignored the AI services (Comprehend, Rekognition, etc.). At least 8-10 questions were about when to use a managed AI service vs building a custom model. Don't skip those."
+          </div>
+          <div class="key-concept">
+            <strong>"Passed with 3 weeks of prep."</strong> "I'm a working ML engineer so I had hands-on experience. What I underestimated was the data engineering domain — Kinesis, Glue, data formats. Know RecordIO-Protobuf, know Pipe Mode, know Glue FindMatches."
+          </div>
+          <div class="key-concept">
+            <strong>"Best tip I got: read the last sentence first."</strong> "The questions are long paragraphs. Reading the actual question first, then scanning the scenario for relevant details, saved me a ton of time. I finished with 50 minutes left."
+          </div>
+          <div class="key-concept">
+            <strong>"Don't memorize — understand the decision tree."</strong> "The exam doesn't ask 'what is XGBoost?' It asks 'given THIS scenario, which algorithm?' Build a mental flowchart: structured data → XGBoost, time series → DeepAR, text → BlazingText. That pattern covers 80% of algorithm questions."
+          </div>
+        </div>
+
+        <div class="instructor-note">
+          <strong>Group discussion:</strong> Ask students to share their exam anxiety points. Address them with the strategies above. Pair experienced AWS cert holders with first-time test takers if possible. Have students practice the "read last sentence first" technique on 3-4 sample questions from the practice exam.
+        </div>
+      </div>
+    `
+  },
+
+  {
+    id:'closing', title:'5.4 Closing & Next Steps', time:'5 min',
+    domain:'Final Review', badge:'', badgeClass:'',
+    content: () => `
+      <div class="fade-in" style="text-align:center;padding:60px 20px;max-width:600px;margin:0 auto">
+        <div style="font-size:4rem;margin-bottom:20px">🎓</div>
+        <h1>Session Complete!</h1>
+        <p style="color:var(--text-muted);margin:16px 0;font-size:1.05rem">
+          You've covered all 4 domains of the AWS Machine Learning Specialty exam.
+        </p>
+
+        <div class="content-card" style="text-align:left;margin:32px 0">
+          <h2>Next Steps for Students</h2>
+          <ul>
+            <li><strong>Review weak areas</strong> — revisit quiz questions you missed</li>
+            <li><strong>AWS Documentation</strong> — deep-dive SageMaker docs</li>
+            <li><strong>Hands-on labs</strong> — build end-to-end ML pipelines in SageMaker</li>
+            <li><strong>Practice exams</strong> — AWS official practice exam + third-party</li>
+            <li><strong>AWS Skill Builder</strong> — free and paid courses</li>
+            <li><strong>SageMaker examples</strong> — GitHub repo with Jupyter notebooks</li>
+          </ul>
+        </div>
+
+        <div class="content-card" style="text-align:left;margin:32px 0">
+          <h2>Exam Day Tips</h2>
+          <ul>
+            <li>65 questions, 180 minutes — ~2.7 min per question</li>
+            <li>Flag difficult questions and return to them</li>
+            <li>Eliminate obviously wrong answers first</li>
+            <li>Look for keywords: "fully managed", "minimize cost", "real-time"</li>
+            <li>Default to XGBoost for tabular data unless DL is specified</li>
+            <li>Default to managed AI services before custom SageMaker solutions</li>
+          </ul>
+        </div>
+
+        <div style="margin-top:24px">
+          <p style="color:var(--text-muted);font-size:.9rem">
+            Your quiz scores are saved in this session. Use the sidebar to review any section.
+          </p>
+        </div>
+      </div>
+    `
+  }
+];
+
+// ═══════════════════════════════════════════════════════════
+//  TIMER
+// ═══════════════════════════════════════════════════════════
+let timerInterval = null, timerSeconds = 0, timerRunning = false;
+
+function toggleTimer() {
+  if (timerRunning) { clearInterval(timerInterval); timerRunning = false; document.getElementById('timerToggle').textContent = 'Resume'; }
+  else { timerInterval = setInterval(() => { timerSeconds++; updateTimerDisplay(); }, 1000); timerRunning = true; document.getElementById('timerToggle').textContent = 'Pause'; }
+}
+function resetTimer() { clearInterval(timerInterval); timerSeconds = 0; timerRunning = false; updateTimerDisplay(); document.getElementById('timerToggle').textContent = 'Start'; }
+function updateTimerDisplay() {
+  const h = Math.floor(timerSeconds/3600), m = Math.floor((timerSeconds%3600)/60), s = timerSeconds%60;
+  document.getElementById('timer').textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SIDEBAR
+// ═══════════════════════════════════════════════════════════
+let currentModule = 0;
+const completedModules = new Set();
+
+function buildSidebar() {
+  const sb = document.getElementById('sidebar');
+  let html = `
+    <div class="sidebar-progress">
+      <div class="progress-text"><strong id="progressCount">0</strong> / ${MODULES.length} sections</div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
+    </div>
+  `;
+  let lastDomain = '';
+  MODULES.forEach((m, i) => {
+    if (m.domain !== lastDomain) {
+      lastDomain = m.domain;
+      html += `<div class="sidebar-section"><div class="sidebar-header">${m.domain}</div></div>`;
+    }
+    html += `<div class="sidebar-item ${i===currentModule?'active':''} ${completedModules.has(i)?'completed':''}" data-idx="${i}" onclick="goToModule(${i})">
+      <span class="dot"></span>
+      <span>${m.title}</span>
+      <span class="time">${m.time}</span>
+    </div>`;
+  });
+  sb.innerHTML = html;
+}
+
+function updateProgress() {
+  const pct = Math.round((completedModules.size / MODULES.length) * 100);
+  const bar = document.getElementById('progressBar');
+  const count = document.getElementById('progressCount');
+  if (bar) bar.style.width = pct + '%';
+  if (count) count.textContent = completedModules.size;
+}
+
+function goToModule(idx) {
+  if (currentModule !== idx && currentModule >= 0) completedModules.add(currentModule);
+  currentModule = idx;
+  const m = MODULES[idx];
+  document.getElementById('mainContent').innerHTML = m.content();
+  buildSidebar();
+  updateProgress();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ═══════════════════════════════════════════════════════════
+//  QUIZ RENDERER
+// ═══════════════════════════════════════════════════════════
+const quizStates = {};
+
+function renderQuiz(quizId, questions) {
+  if (!quizStates[quizId]) quizStates[quizId] = { answers: {}, submitted: false, score: 0 };
+  const st = quizStates[quizId];
+  const letters = ['A','B','C','D','E'];
+
+  let html = `<div class="fade-in">
+    <div class="module-header">
+      <h1>Knowledge Check</h1>
+      <p>${questions.length} questions — select the best answer for each</p>
+    </div>
+    <div class="quiz-container" id="quiz-${quizId}">`;
+
+  questions.forEach((q, qi) => {
+    html += `<div class="quiz-question" id="${quizId}-q${qi}">
+      <div class="q-num">Question ${qi+1} of ${questions.length}</div>
+      <div class="q-text">${q.q}</div>`;
+    q.opts.forEach((opt, oi) => {
+      let cls = 'quiz-option';
+      if (st.submitted) {
+        if (oi === q.correct) cls += ' correct';
+        else if (st.answers[qi] === oi) cls += ' incorrect';
+      } else if (st.answers[qi] === oi) cls += ' selected';
+      html += `<div class="${cls}" onclick="selectAnswer('${quizId}',${qi},${oi})">
+        <span class="opt-letter">${letters[oi]}</span>
+        <span>${opt}</span>
+      </div>`;
+    });
+    html += `<div class="quiz-explanation ${st.submitted?'visible':''}" id="${quizId}-exp${qi}">
+      <strong>${st.submitted && st.answers[qi] === q.correct ? '✓ Correct!' : st.submitted ? '✗ Incorrect.' : ''}</strong> ${q.explain}
+    </div></div>`;
+  });
+
+  if (st.submitted) {
+    html += `<div class="score-card">
+      <div class="score">${st.score} / ${questions.length}</div>
+      <div class="score-label">${Math.round(st.score/questions.length*100)}% — ${st.score/questions.length >= .75 ? 'Passing!' : 'Review recommended'}</div>
+    </div>`;
+    html += `<div class="quiz-actions"><button class="btn btn-outline" onclick="resetQuiz('${quizId}')">Retry Quiz</button>
+      <button class="btn btn-orange" onclick="goToModule(${currentModule+1})">Continue →</button></div>`;
+  } else {
+    html += `<div class="quiz-actions">
+      <button class="btn btn-orange" onclick="submitQuiz('${quizId}',${JSON.stringify(questions).replace(/"/g,'&quot;')})">Submit Answers</button>
+    </div>`;
+  }
+
+  html += '</div></div>';
+  return html;
+}
+
+function selectAnswer(quizId, qi, oi) {
+  if (quizStates[quizId].submitted) return;
+  quizStates[quizId].answers[qi] = oi;
+  // re-render
+  goToModule(currentModule);
+}
+
+function submitQuiz(quizId, questions) {
+  const st = quizStates[quizId];
+  st.submitted = true;
+  st.score = 0;
+  questions.forEach((q, qi) => { if (st.answers[qi] === q.correct) st.score++; });
+  goToModule(currentModule);
+}
+
+function resetQuiz(quizId) {
+  quizStates[quizId] = { answers: {}, submitted: false, score: 0 };
+  goToModule(currentModule);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  FLASHCARDS
+// ═══════════════════════════════════════════════════════════
+const flashcardStates = {};
+
+function renderFlashcards(deckId, cards) {
+  if (!flashcardStates[deckId]) flashcardStates[deckId] = { idx: 0, flipped: false };
+  const st = flashcardStates[deckId];
+  const card = cards[st.idx];
+
+  return `
+    <div class="flashcard-deck" id="deck-${deckId}">
+      <div class="flashcard ${st.flipped?'flipped':''}" onclick="flipCard('${deckId}')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            <p style="font-size:.75rem;color:var(--text-muted);margin-bottom:12px">CLICK TO REVEAL</p>
+            <h3>${card.front}</h3>
+          </div>
+          <div class="flashcard-back">
+            <p style="font-size:.75rem;color:var(--success);margin-bottom:12px">ANSWER</p>
+            <p>${card.back}</p>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard-nav">
+        <button class="btn btn-outline btn-sm" onclick="prevCard('${deckId}',${cards.length})" ${st.idx===0?'disabled':''}>← Prev</button>
+        <span class="flashcard-count">${st.idx+1} / ${cards.length}</span>
+        <button class="btn btn-outline btn-sm" onclick="nextCard('${deckId}',${cards.length})" ${st.idx===cards.length-1?'disabled':''}>Next →</button>
+      </div>
+    </div>
+  `;
+}
+
+function flipCard(deckId) {
+  flashcardStates[deckId].flipped = !flashcardStates[deckId].flipped;
+  goToModule(currentModule);
+}
+function nextCard(deckId, total) {
+  const st = flashcardStates[deckId];
+  if (st.idx < total-1) { st.idx++; st.flipped = false; goToModule(currentModule); }
+}
+function prevCard(deckId, total) {
+  const st = flashcardStates[deckId];
+  if (st.idx > 0) { st.idx--; st.flipped = false; goToModule(currentModule); }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ACCORDION
+// ═══════════════════════════════════════════════════════════
+function toggleAccordion(el) {
+  el.classList.toggle('open');
+  el.nextElementSibling.classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════
+buildSidebar();
+goToModule(0);
+</script>
+</body>
+</html>
